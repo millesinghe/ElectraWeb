@@ -6,6 +6,13 @@ p {
    padding-top: 20px; 
    flex :1;
 }
+ 
+ /* Change the link color on hover */
+ #navBtn:hover {
+   background-color: #05b19336;
+   border-radius: 50px 0px 0px 50px;
+   color: white;
+ }
 
 #btnText {
    flex :2;

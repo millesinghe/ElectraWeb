@@ -6,12 +6,11 @@ import './NavDiv.css'
 export default function NavDiv() {
     return (
         <div className="navBlur">
-            <div>
-                <NavHeader />
+            <ul>
                 <NavButton name = "Control Room"/>
                 <NavButton name = "Device Manager"/>
                 <NavButton name = "User Management"/>
-            </div>
+            </ul>
 
         </div>
     )

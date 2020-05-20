@@ -9,6 +9,11 @@
     }
 }
 
-.navBlur div{
+.navBlur ul{
     padding-left: 1px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    
+     
 }

@@ -20,7 +20,7 @@ export default function NavButton(props) {
         <>
             <div id="navBtn">
                 {renderIcon}
-                <div id="btnText"><p>{props.name}</p></div>
+                <li id="btnText"><p>{props.name}</p></li>
             </div>
 
         </>
