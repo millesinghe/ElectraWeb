@@ -1,13 +1,25 @@
-p{
+p {
    color: beige;
-   padding-right: 15px;
-   text-align: center;
 }
 
-#centerIcon{
-   padding-top: 16px;
+#btnIcon {
+   padding-top: 20px; 
+   flex :1;
 }
 
-#navBtn{
+#btnText {
+   flex :2;
+}
+
+#navBtn {
+   flex-flow: row wrap;
+   align-items: stretch;
    display: flex;
+   justify-content: center;
+   padding-right: 15px;
+   flex-wrap: wrap;
+   margin: 10px;
+
+   border-bottom: 2px solid #00f0c3b5;
+   border-right: 5px solid #00f0c3b5;
 }

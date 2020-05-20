@@ -16,7 +16,6 @@ function App() {
         <div id="navSide" className="column"><NavDiv/></div>
         <div id="homeContent" className="column" ><ContentDiv /></div>
       </div>
-      <input type="text" />
     </>
   )
 
