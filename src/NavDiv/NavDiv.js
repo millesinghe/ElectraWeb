@@ -8,7 +8,9 @@ export default function NavDiv() {
         <div className="navBlur">
             <div>
                 <NavHeader />
-                <NavButton />
+                <NavButton name = "Home"/>
+                <NavButton name = "Control Center"/>
+                <NavButton name = "User Management"/>
             </div>
 
         </div>
