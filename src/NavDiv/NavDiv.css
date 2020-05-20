@@ -1,4 +1,14 @@
 .navBlur{
-    background: #495057bd;
-    width: 150px;
+    background: #0d1319fa;
+    width: 200px;
+}
+
+@media (max-width: 300px) {
+    .navBlur{
+        width: 100%;
+    }
+}
+
+.navBlur div{
+    padding-left: 10px;
 }

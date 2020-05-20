@@ -1,5 +1,4 @@
 h3 {
-    background-color: #0d1319;
     text-align: center;
     padding: 1.0%;
     color: white;
@@ -8,5 +7,9 @@ h3 {
     margin: auto;
     text-align: left;
   }
+
+.blur{
+  background-color:#000c19;
+}
 
 logo{}

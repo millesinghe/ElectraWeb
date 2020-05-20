@@ -1,0 +1,13 @@
+p{
+   color: beige;
+   padding-right: 15px;
+   text-align: center;
+}
+
+#centerIcon{
+   padding-top: 16px;
+}
+
+#navBtn{
+   display: flex;
+}
