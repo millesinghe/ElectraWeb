@@ -1,26 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import './App.css'
+
+import HeaderDiv from './HeaderDiv/Header';
+import NavDiv from './NavDiv/NavDiv';
+import ContentDiv from './ContentDiv/ContentDiv';
+
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <HeaderDiv />
+      <div className="row">
+        <div id="navSide" className="column"><NavDiv/></div>
+        <div id="homeContent" className="column" ><ContentDiv /></div>
+      </div>
+      <input type="text" />
+    </>
+  )
+
 }
 
 export default App;

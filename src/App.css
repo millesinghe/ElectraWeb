@@ -1,38 +1,75 @@
-.App {
-  text-align: center;
+* {
+    box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+    font-family: "Maven Pro", sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+/* Container for flexboxes */
+
+.row {
+    display: -webkit-flex;
+    display: flex;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+
+/* Create three unequal columns that sits next to each other */
+
+.column {
+    display: flex;
+    height: 300px;
+    /* Should be removed. Only for demonstration */
 }
 
-.App-link {
-  color: #61dafb;
+
+/* Left and right column */
+
+#navSide {
+    -webkit-flex: 1;
+    background-color: #495057;
+    background: url(./assets/navBack1.jpg);
+
+    -ms-flex: 2;
+    flex: 2;
+    max-width: 150px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+/* Left and right column */
+
+@media (max-width: 600px) {
+    #navSide {
+        max-width: 100%;
+    }
+}
+
+
+/* Middle column */
+
+#homeContent {
+    background-color: #eee;
+    -webkit-flex: 2;
+    -ms-flex: 2;
+    flex: 7;
+}
+
+
+/* Style the footer */
+
+.footer {
+    background-color: #f1f1f1;
+    padding: 10px;
+    text-align: center;
+}
+
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+
+@media (max-width: 600px) {
+    .row {
+        -webkit-flex-direction: column;
+        flex-direction: column;
+    }
 }
