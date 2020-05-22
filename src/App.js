@@ -9,6 +9,10 @@ import ContentDiv from './ContentDiv/ContentDiv';
 
 function App() {
 
+
+  const clickBtnState = () => {
+  }
+
   return (
     <>
       <HeaderDiv />

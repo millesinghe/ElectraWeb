@@ -4,6 +4,9 @@ import NavButton from './NavButton/NavButton'
 import './NavDiv.css'
 
 export default function NavDiv() {
+
+
+    
     return (
         <div className="navBlur">
             <ul>

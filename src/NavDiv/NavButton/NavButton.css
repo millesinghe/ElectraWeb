@@ -1,5 +1,5 @@
 p {
-   color: beige;
+   color: #05b193f2;
 }
 
 #btnIcon {
@@ -7,15 +7,22 @@ p {
    flex :1;
 }
  
- /* Change the link color on hover */
- #navBtn:hover {
-   background-color: #05b19336;
-   border-radius: 50px 0px 0px 50px;
-   color: white;
- }
+svg{
+   color: #05b193f2;
+}
+
 
 #btnText {
    flex :2;
+}
+
+#navBtn:hover > li>p{
+   color:white;
+   font-weight: 600;
+}
+
+#navBtn:hover > #btnIcon >svg{
+   color:white;
 }
 
 #navBtn {

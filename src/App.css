@@ -1,6 +1,13 @@
 * {
     box-sizing: border-box;
 }
+/* 
+body {
+    font-family: "Maven Pro", sans-serif;
+} */
+
+
+/* Container for flexboxes */
 
 .row {
     display: -webkit-flex;
