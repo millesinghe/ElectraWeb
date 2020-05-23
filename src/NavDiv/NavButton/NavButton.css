@@ -16,16 +16,16 @@ svg{
    flex :2;
 }
 
-#navBtn:hover > li>p{
+.navBtn:hover > li>p{
    color:white;
    font-weight: 600;
 }
 
-#navBtn:hover > #btnIcon >svg{
+.navBtn:hover > #btnIcon >svg{
    color:white;
 }
 
-#navBtn {
+.navBtn {
    flex-flow: row wrap;
    align-items: stretch;
    display: flex;
