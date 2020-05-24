@@ -11,14 +11,14 @@ export default class App extends React.Component {
   constructor(){
     super();
     this.state = {
-      navClick :""
+      navClick :"Control Room"
     }
   }
 
   updateAppNaviState(val){
-    console.log("App - " +val);
     this.setState({navClick : val})
     console.log(this.state.navClick);
+ 
   }
 
   render() {
@@ -27,7 +27,7 @@ export default class App extends React.Component {
         <HeaderDiv />
       <div className="row">
         <div id="navSide" className="column"><NavDiv updateAppState= {this.updateAppNaviState.bind(this)} /></div>
-        <div id="homeContent" className="column" ><ContentDiv /></div>
+        <div id="homeContent" ><ContentDiv renderView = {this.state.navClick}/></div>
       </div>
       </>
     )

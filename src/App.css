@@ -19,6 +19,7 @@ body {
 
 .column {
     display: flex;
+    align-items: stretch;
     height: 90vh;
     /* Should be removed. Only for demonstration */
 }
