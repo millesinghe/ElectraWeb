@@ -25,6 +25,11 @@ svg{
    color:white;
 }
 
+.navBtn:hover{
+   background: #0452434a;
+   border-radius: 35px 0 0 35px;
+}
+
 .navBtn {
    flex-flow: row wrap;
    align-items: stretch;
