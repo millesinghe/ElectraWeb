@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import Chevron from './Chevron'
+import * as DeviceViews from "./../../ContentDiv/ConDevice/ViewRender"
 
 import './Accodian.css'
 
@@ -16,6 +17,8 @@ export default function Accodian(props) {
         console.log("scrollHeight - " + content.current.scrollHeight);
     }
 
+    console.log("Milinda - " + DeviceViews);
+
     return (
         <div className="accordion__section">
             <button className={`accordion_btn ${setActive}`} onClick={toggleAccordian}>
@@ -23,8 +26,18 @@ export default function Accodian(props) {
                 <div id="tagIcon"><Chevron width={10} fill={"#05b193f2"} /></div>
             </button>
             <div ref={content} style={{ maxHeight: `${setHeight}` }} className="accordion__content">
-                <div className="accordion__text" dangerouslySetInnerHTML={{ __html: props.content }} />
+                {renderContentView(props.content)}
+                {/* <div className="accordion__text" dangerouslySetInnerHTML={{ __html: props.content }} /> */}
             </div>
         </div>
     )
+
+    function renderContentView(ViewName) {
+        if (!ViewName)
+            return "";
+        const View = DeviceViews[ViewName];
+        return <View />;
+    }
+
 }
+

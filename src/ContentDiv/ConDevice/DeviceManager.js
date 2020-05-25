@@ -6,8 +6,8 @@ export default function DeviceManager() {
     return (
         <div>
             <div id= "header"><h1>Device Manager</h1></div>
-            <Accodian  title="Electra Nodes" content="Sapumal Bandara" />
-            <Accodian  title="Electra Device" content="Milinda Switch Bandara" />
+            <Accodian  title="Electra Nodes" content="ElectraNode" />
+            <Accodian  title="Electra Device" content="ElectraDevice" />
         </div>
     )
 }
