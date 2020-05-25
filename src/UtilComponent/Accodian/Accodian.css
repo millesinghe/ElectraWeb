@@ -70,11 +70,15 @@
 
 
 #tagTitle{
-  flex: 10; 
+  flex: 35; 
   display: flex; 
 }
 
 #tagIcon{
-  flex: 1; 
+  flex: 3; 
   display: flex; 
+}
+
+.flex1{
+  flex: 1;
 }

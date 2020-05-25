@@ -14,14 +14,12 @@ export default function Accodian(props) {
     function toggleAccordian() {
         setActiveState(setActive === "" ? "active" : "");
         setHeightState(setActive === "active" ? "0px" : `${content.current.scrollHeight}px`);
-        console.log("scrollHeight - " + content.current.scrollHeight);
     }
-
-    console.log("Milinda - " + DeviceViews);
 
     return (
         <div className="accordion__section">
             <button className={`accordion_btn ${setActive}`} onClick={toggleAccordian}>
+                <div className="flex1"></div>
                 <div id="tagTitle"><p className="accordion__title">{props.title}</p></div>
                 <div id="tagIcon"><Chevron width={10} fill={"#05b193f2"} /></div>
             </button>
