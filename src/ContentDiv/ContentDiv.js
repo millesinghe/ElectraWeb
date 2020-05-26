@@ -1,5 +1,6 @@
 import React from 'react'
 import DeviceManager from './ConDevice/DeviceManager'
+import ControlCenter from './ConControl/ControlCenter'
 
 export default class ContentDiv extends React.Component {
     
@@ -8,7 +9,7 @@ export default class ContentDiv extends React.Component {
         console.log("6-"+val);
         let renderView;
         if (val === "Control Room") {
-            renderView = <h1 id="btnIcon">Milinda</h1>
+            renderView = <ControlCenter/>
         } else if (val === "Device Manager") {
             renderView = <DeviceManager/>
         } else if (val === "User Management") {

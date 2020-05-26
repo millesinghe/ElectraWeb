@@ -9,7 +9,7 @@ body {
 
 /* Container for flexboxes */
 
-.row {
+.AppRow {
     display: -webkit-flex;
     display: flex;
 }
@@ -17,7 +17,7 @@ body {
 
 /* Create three unequal columns that sits next to each other */
 
-.column {
+.columnApp {
     display: flex;
     align-items: stretch;
     height: 90vh;

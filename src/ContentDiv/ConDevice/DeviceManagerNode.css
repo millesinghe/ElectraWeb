@@ -1,0 +1,38 @@
+.nodeRow{
+    flex-direction: row;
+    overflow:hidden;
+    padding-top: 10px;
+    padding: 5px;
+    flex-wrap: wrap;
+    display: flex;
+}
+
+
+.keyName{
+    /* padding: 0 25px 0 0; */
+    flex:3;
+    display: flex;
+    justify-content: end;
+}
+
+.midbar{
+    flex:1;
+}
+
+.marginGap{
+    flex:1;
+}
+
+input{
+    flex:3;
+    justify-content:flex-start
+}
+
+.innerWrapper{
+    padding:10px;
+    flex:1;
+}
+
+button{
+    flex : 1;
+}
