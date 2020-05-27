@@ -4,10 +4,6 @@ import './DeviceManager.css'
 
 export default function DeviceManager() {
 
-    let countryData = [
-        { value: 'USA', name: 'USA' },
-        { value: 'CANADA', name: 'CANADA' }            
-    ];
 
     return (
         <div>

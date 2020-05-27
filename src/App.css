@@ -1,11 +1,11 @@
 * {
     box-sizing: border-box;
 }
+
 /* 
 body {
     font-family: "Maven Pro", sans-serif;
 } */
-
 
 /* Container for flexboxes */
 
@@ -13,7 +13,6 @@ body {
     display: -webkit-flex;
     display: flex;
 }
-
 
 /* Create three unequal columns that sits next to each other */
 
@@ -24,19 +23,16 @@ body {
     /* Should be removed. Only for demonstration */
 }
 
-
 /* Left and right column */
 
 #navSide {
     -webkit-flex: 1;
-    background-color:#0d1319fa;
+    background-color: #0d1319fa;
     background: url(./assets/navBack1.jpg);
-
     -ms-flex: 2;
     flex: 2;
     max-width: 200px;
 }
-
 
 /* Left and right column */
 
@@ -45,7 +41,6 @@ body {
         max-width: 100%;
     }
 }
-
 
 /* Middle column */
 
@@ -57,7 +52,6 @@ body {
     padding: 10px 25px;
 }
 
-
 /* Style the footer */
 
 .footer {
@@ -66,7 +60,6 @@ body {
     text-align: center;
 }
 
-
 /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
 
 @media (max-width: 300px) {
@@ -74,4 +67,34 @@ body {
         -webkit-flex-direction: column;
         flex-direction: column;
     }
+}
+
+.horizontalCenter {
+    align-items: stretch;
+    display: flex;
+    height: 100%;
+}
+
+.flex1 {
+    flex: 1;
+}
+
+.flex2 {
+    flex: 2;
+}
+
+.flex3 {
+    flex: 3;
+}
+
+.flex4 {
+    flex: 4;
+}
+
+.flex5 {
+    flex: 5;
+}
+
+.flex6 {
+    flex: 6;
 }

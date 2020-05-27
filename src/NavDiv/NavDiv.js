@@ -6,7 +6,6 @@ export default class NavDiv extends React.Component {
 
 
     updateParentAppState(val) {
-        console.log("NavDiv - " + val);
         this.props.updateAppState(val);
     }
 

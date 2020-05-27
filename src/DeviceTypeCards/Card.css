@@ -1,0 +1,17 @@
+.closeText {
+    font-size: 0.8rem;
+    line-height: 1;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.black {
+    color: black;
+}
+
+.widthManage {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+    padding: 0.15rem 1.25rem !important;
+}
+

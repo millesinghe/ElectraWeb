@@ -22,7 +22,6 @@ export default class NavButton extends React.Component {
     }
 
     btnClickRef(val) {
-        console.log("NavButton - " +val);
         this.props.updateNavState(val);
     }
 

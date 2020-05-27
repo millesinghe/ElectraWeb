@@ -40,6 +40,8 @@
   font-weight: 600;
   font-size: 14px;
   text-align: left;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
 }
 
 /* Style the accordion chevron icon */
@@ -76,8 +78,4 @@
 #tagIcon{
   flex: 3; 
   display: flex; 
-}
-
-.flex1{
-  flex: 1;
 }
