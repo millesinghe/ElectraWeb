@@ -4,3 +4,8 @@
     flex-direction: row;
 }
 
+.Card-Layout{
+    flex-wrap: wrap;
+    display: flex;
+    align-content:space-between
+}

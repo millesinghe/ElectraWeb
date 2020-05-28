@@ -15,3 +15,10 @@
     padding: 0.15rem 1.25rem !important;
 }
 
+.card{
+    margin: 15px;
+}
+
+.childCard:hover{
+    box-shadow: 11px 12px 12px -7px;
+}

@@ -13,7 +13,7 @@ export default class ContentDiv extends React.Component {
         } else if (val === "Device Manager") {
             renderView = <DeviceManager/>
         } else if (val === "User Management") {
-            renderView = <h1 id="btnIcon">Bandara</h1>
+            renderView = <h1>Coming Soon...</h1>
         }
         return renderView;
     }
