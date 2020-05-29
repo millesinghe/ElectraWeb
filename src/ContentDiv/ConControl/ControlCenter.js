@@ -56,11 +56,11 @@ export default class ControlCenter extends Component {
     }
 
     triggerStatus(id) {
-        this.state.cardlist.map(card => {
+        this.state.cardlist.forEach(card => {
             if (card.id === id) {
                 card.isOn = !card.isOn;
             }
-            
+
         });
 
     }
@@ -68,8 +68,8 @@ export default class ControlCenter extends Component {
     getDeviceList() {
         let card1 = new CardModel(1, "Milinda Standing Fan", false, "Milinda Room", "192.168.1.7", "5000", "2");
         let card3 = new CardModel(3, "Milinda Dress Table Light", false, "Milinda Room", "192.168.1.7", "5000", "3");
-        let card2 = new CardModel(2, "Milinda Standing Fan", false, "Milinda Room", "192.168.1.7", "5000", "2");
-        
+        let card2 = new CardModel(2, "Milinda Air Conditioner", false, "Milinda Room", "192.168.1.7", "5000", "2");
+
         let myList = this.state.cardlist;
         myList.push(card1);
         myList.push(card2);
@@ -78,6 +78,19 @@ export default class ControlCenter extends Component {
         this.setState({
             cardlist: myList
         });
+    }
+
+    turnOffAll() {
+        let myList = this.state.cardlist.map(card => {
+            card.isOn = false;
+            return card;
+        });
+
+        this.setState({ 
+            cardlist : myList
+        });
+        console.log("Close All" + this.state.cardlist);
+        
     }
 
     render() {
@@ -90,7 +103,7 @@ export default class ControlCenter extends Component {
                     <Card.Body>
                         <div className="headerRow">
                             <div className="flex6" />
-                            <Button className="flex1" variant="danger">Off All</Button>
+                            <Button onClick={() => { this.turnOffAll(); }} className="flex1" variant="danger">Off All</Button>
                         </div>
 
                         <div className="Card-Layout">

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { ListGroup, Card } from 'react-bootstrap'
-import ToggleBtn from "../UtilComponent/ToggleBtn/ToggleBtn";
+// import ToggleBtn from "../UtilComponent/ToggleBtn/ToggleBtn";
 import { FaPowerOff } from "react-icons/fa";
 
 
@@ -13,14 +13,14 @@ export default class ElectraCard extends React.Component {
         value: false,
     }
 
-
     btnClickRef(card) {
         this.props.myFunc(card.id);
         this.setState({ value: card.isOn});
     }
 
-    render() {
 
+    render() {
+        
         return (
             <>
                 <Card className="childCard" style={{ width: '18rem' }}>
@@ -28,9 +28,8 @@ export default class ElectraCard extends React.Component {
                         <div className="flex5">{this.props.card.name}</div>
                         <div className="flex1">
                             {/* <ToggleBtn isOn={this.props.card} handleToggle={() => this.btnClickRef(this.props.card)} />
-                            <button onClick={() => this.btnClickRef(this.props.card)}>Switch</button>
                              */}
-                            <div id="powerdiv" className={`${this.state.value ? "onState" : ""}`} onClick={() => this.btnClickRef(this.props.card)}><FaPowerOff id ="powerSvg" size='2rem'/></div>
+                            <div id="powerdiv" className={`${this.props.card.isOn ? "onState" : ""}`} onClick={() => this.btnClickRef(this.props.card)}><FaPowerOff id ="powerSvg" size='2rem'/></div>
                         </div>
 
                     </Card.Header>
@@ -42,7 +41,7 @@ export default class ElectraCard extends React.Component {
                             </div>
                             <div className="nodeRow">
                                 <p className="keyName flex3 closeText">Status</p>
-                                <p className="flex3 closeText">: {displayTest(`${this.state.value}`)}</p>
+                                <p className="flex3 closeText">: {displayTest(`${this.props.card.isOn}`)}</p>
                             </div>
                             <div className="nodeRow">
                                 <p className="keyName flex3 closeText black">Device Location</p>
