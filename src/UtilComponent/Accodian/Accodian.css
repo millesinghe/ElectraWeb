@@ -38,7 +38,6 @@
 .accordion__title {
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
-  font-size: 14px;
   text-align: left;
   margin-top: 0.4rem;
   margin-bottom: 0.4rem;
@@ -72,7 +71,8 @@
 
 #tagTitle{
   flex: 35; 
-  display: flex; 
+  display: flex;
+  padding: 3px;
 }
 
 #tagIcon{

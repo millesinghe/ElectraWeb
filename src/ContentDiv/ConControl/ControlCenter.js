@@ -21,11 +21,9 @@ export default class ControlCenter extends Component {
 
 
     selectedChoice(event) {
-        console.log("Selected - " + event);
         this.setState({
             location: event
         });
-        console.log("Selected - " + this.state.location);
     }
 
     renderParentCardHeader() {
@@ -63,10 +61,8 @@ export default class ControlCenter extends Component {
                 card.isOn = !card.isOn;
             }
             
-            console.log("Scan-" + card.name + " - " + card.isOn);
         });
 
-        console.log("Test Me Triggered");
     }
 
     getDeviceList() {
@@ -82,7 +78,6 @@ export default class ControlCenter extends Component {
         this.setState({
             cardlist: myList
         });
-        console.log("Card Data Loaded");
     }
 
     render() {

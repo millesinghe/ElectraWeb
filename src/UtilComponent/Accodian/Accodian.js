@@ -24,7 +24,9 @@ export default function Accodian(props) {
                 <div id="tagIcon"><Chevron width={10} fill={"#05b193f2"} /></div>
             </button>
             <div ref={content} style={{ maxHeight: `${setHeight}` }} className="accordion__content">
-                {renderContentView(props.content)}
+                <div>
+                    {renderContentView(props.content)}
+                </div>
                 {/* <div className="accordion__text" dangerouslySetInnerHTML={{ __html: props.content }} /> */}
             </div>
         </div>

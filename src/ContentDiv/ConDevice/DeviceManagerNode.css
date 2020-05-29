@@ -10,16 +10,16 @@
 
 .keyName{
     /* padding: 0 25px 0 0; */
-    flex:3;
-    display: flex;
+    flex:2;
+    text-align: left;
 }
 
 .midbar{
-    flex:1;
+    flex:0.1;
 }
 
 .marginGap{
-    flex:1;
+    flex:4;
 }
 
 input{

@@ -17,7 +17,6 @@ export default class App extends React.Component {
 
   updateAppNaviState(val){
     this.setState({navClick : val})
-    console.log(this.state.navClick);
  
   }
 

@@ -17,7 +17,6 @@ export default class ElectraCard extends React.Component {
     btnClickRef(card) {
         this.props.myFunc(card.id);
         this.setState({ value: card.isOn});
-        console.log(card.id + "-ECard");
     }
 
     render() {
