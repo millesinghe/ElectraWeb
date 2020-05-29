@@ -53,7 +53,7 @@ export default class ElectraDevice extends Component {
                     <input></input>
                     <div className="marginGap" />
                 </div>
-                <div className="nodeRow">
+                <div className="nodeRow" style={{padding: '0px 50px 0 50px', margin: '15px'}}>
                     <button>Cancel</button>
                     <div className="marginGap" />
                     <button>Save</button>

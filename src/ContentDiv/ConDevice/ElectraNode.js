@@ -4,7 +4,7 @@ import './DeviceManagerNode.css'
 export default class ElectraNode extends Component {
     render() {
         return (
-            <div style={{paddingTop: "10px"}}>
+            <div style={{ paddingTop: "10px" }}>
                 <div className="nodeRow">
                     <div className="marginGap" />
                     <div className="keyName">Project</div>
@@ -33,11 +33,11 @@ export default class ElectraNode extends Component {
                     <input></input>
                     <div className="marginGap" />
                 </div>
-                <div className="nodeRow">
-                        <button>Cancel</button>
+                <div className="nodeRow" style={{padding: '0px 50px 0 50px', margin: '15px'}}>
+                    <button>Cancel</button>
                     <div className="marginGap" />
-                        <button>Save</button>
-                    </div>
+                    <button>Save</button>
+                </div>
             </div>
         )
     }
