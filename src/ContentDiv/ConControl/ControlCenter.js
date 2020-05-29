@@ -8,15 +8,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './ControlCenter.css'
 export default class ControlCenter extends Component {
 
-    constructor(){
+    constructor() {
         super();
         this.getDeviceList();
     }
 
     state = {
         location: "All Locations",
-        cardlist : []
-        
+        cardlist: []
+
     };
 
 
@@ -29,7 +29,7 @@ export default class ControlCenter extends Component {
     }
 
     renderParentCardHeader() {
-        return(
+        return (
             <div className="headerRow">
                 <Card.Header className="flex3" as="h5">{this.state.location}</Card.Header>
                 <div>
@@ -57,30 +57,40 @@ export default class ControlCenter extends Component {
         return <Card />;
     }
 
-    triggerStatus(id, status) {
-        console.log("Test Me Triggered" + id + " - " +status);
+    triggerStatus(id) {
+        this.state.cardlist.map(card => {
+            if (card.id === id) {
+                card.isOn = !card.isOn;
+            }
+            
+            console.log("Scan-" + card.name + " - " + card.isOn);
+        });
+
+        console.log("Test Me Triggered");
     }
 
-    getDeviceList(){
-        let card = new CardModel("Milinda Light", true, "Milinda Room", "192.168.1.7", "5000","4");
-        let card1 = new CardModel("Milinda Standing Fan", false, "Milinda Room", "192.168.1.7", "5000","2");
-       
-        let myList = this.state.cardlist;
-        myList.push(card);
-        myList.push(card1);
+    getDeviceList() {
+        let card1 = new CardModel(1, "Milinda Standing Fan", false, "Milinda Room", "192.168.1.7", "5000", "2");
+        let card3 = new CardModel(3, "Milinda Dress Table Light", false, "Milinda Room", "192.168.1.7", "5000", "3");
+        let card2 = new CardModel(2, "Milinda Standing Fan", false, "Milinda Room", "192.168.1.7", "5000", "2");
         
+        let myList = this.state.cardlist;
+        myList.push(card1);
+        myList.push(card2);
+        myList.push(card3);
+
         this.setState({
-            cardlist:myList
+            cardlist: myList
         });
-        console.log("Card Data Loaded" );
+        console.log("Card Data Loaded");
     }
 
     render() {
-        
+
         return (
             <div>
                 <Card>
-                    {this.renderParentCardHeader}
+                    {this.renderParentCardHeader()}
 
                     <Card.Body>
                         <div className="headerRow">
@@ -89,25 +99,11 @@ export default class ControlCenter extends Component {
                         </div>
 
                         <div className="Card-Layout">
-                        <ElectraCard
-                                name="Milinda Wall Switch"
-                                isOn={true}
-                                location="Milinda Room"
-                                ip="192.168.1.7"
-                                port="5000"
-                                socket="2"
-                                myFunc = {this.triggerStatus.bind(this)}
-                            />
-                            <ElectraCard
-                                name="Milinda Fan"
-                                isOn={false}
-                                location="Milinda Room"
-                                ip="192.168.1.7"
-                                port="5000"
-                                socket="2"
-                                myFunc = {this.triggerStatus.bind(this)}
-                            />
-                            
+                            {this.state.cardlist.map(card => (
+                                <ElectraCard key={card.id} card={card}
+                                    myFunc={this.triggerStatus.bind(this)}
+                                />
+                            ))}
                         </div>
 
                     </Card.Body>
@@ -118,12 +114,13 @@ export default class ControlCenter extends Component {
 }
 
 export class CardModel {
-    constructor(name, isOn, location, ip, port, socket) {
-      this.name = name;
-      this.isOn = isOn;
-      this.location = location;
-      this.ip = ip;
-      this.port = port;
-      this.socket = socket;
+    constructor(id, name, isOn, location, ip, port, socket) {
+        this.id = id;
+        this.name = name;
+        this.isOn = isOn;
+        this.location = location;
+        this.ip = ip;
+        this.port = port;
+        this.socket = socket;
     }
-  }
+}
