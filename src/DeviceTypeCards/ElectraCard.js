@@ -40,8 +40,8 @@ export default class ElectraCard extends React.Component {
                                 <p className="flex3 closeText">: {this.props.card.name}</p>
                             </div>
                             <div className="nodeRow">
-                                <p className="keyName flex3 closeText">Status</p>
-                                <p className="flex3 closeText">: {displayTest(`${this.props.card.isOn}`)}</p>
+                                <p className="bold900 keyName flex3 closeText">Status</p>
+                                <p className="bold900 flex3 closeText">: {displayTest(`${this.props.card.isOn}`)}</p>
                             </div>
                             <div className="nodeRow">
                                 <p className="keyName flex3 closeText black">Device Location</p>
