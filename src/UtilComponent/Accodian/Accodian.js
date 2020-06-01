@@ -24,19 +24,19 @@ export default function Accodian(props) {
                 <div id="tagIcon"><Chevron width={10} fill={"#05b193f2"} /></div>
             </button>
             <div ref={content} style={{ maxHeight: `${setHeight}` }} className="accordion__content">
-                <div>
-                    {renderContentView(props.content)}
+                <div>                     
+                    {renderContentView(props.content, props.project)}
                 </div>
                 {/* <div className="accordion__text" dangerouslySetInnerHTML={{ __html: props.content }} /> */}
             </div>
         </div>
     )
 
-    function renderContentView(ViewName) {
+    function renderContentView(ViewName, project) {
         if (!ViewName)
             return "";
         const View = DeviceViews[ViewName];
-        return <View />;
+        return <View project= {project}/>;
     }
 
 }
