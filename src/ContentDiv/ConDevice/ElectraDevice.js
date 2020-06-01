@@ -9,7 +9,7 @@ export default class ElectraDevice extends Component {
                     <div style={{ padding: "22px", display: "flex" }}>
                         <div className="flex1">
                             Cat
-                </div>
+                        </div>
                         <div className="flex1">
                             <div className="nodeRow">
                                 <div className="keyName">Project Name</div>

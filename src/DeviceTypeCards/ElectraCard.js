@@ -35,27 +35,27 @@ export default class ElectraCard extends React.Component {
                     </Card.Header>
                     <ListGroup variant="flush">
                         <ListGroup.Item>
-                            <div className="nodeRow">
+                            <div className="nodeRow-card nodeRow">
                                 <p className="keyName flex3 closeText">Name</p>
                                 <p className="flex3 closeText">: {this.props.card.name}</p>
                             </div>
-                            <div className="nodeRow">
+                            <div className="nodeRow-card nodeRow">
                                 <p className="bold900 keyName flex3 closeText">Status</p>
                                 <p className="bold900 flex3 closeText">: {displayTest(`${this.props.card.isOn}`)}</p>
                             </div>
-                            <div className="nodeRow">
+                            <div className="nodeRow-card nodeRow">
                                 <p className="keyName flex3 closeText black">Device Location</p>
                                 <p className="flex3 closeText black">: {this.props.card.location}</p>
                             </div>
-                            <div className="nodeRow">
+                            <div className="nodeRow-card nodeRow">
                                 <div className="keyName flex3 closeText black">Electra Node IP</div>
                                 <div className="flex3 closeText">: {this.props.card.ip}</div>
                             </div>
-                            <div className="nodeRow">
+                            <div className="nodeRow-card nodeRow">
                                 <div className="keyName flex3 closeText black">Port</div>
                                 <div className="flex3 closeText">: {this.props.card.port}</div>
                             </div>
-                            <div className="nodeRow">
+                            <div className="nodeRow-card nodeRow">
                                 <div className="keyName flex3 closeText black">Node Socket</div>
                                 <div className="flex3 closeText">: {this.props.card.socket}</div>
                             </div>
