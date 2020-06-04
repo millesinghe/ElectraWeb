@@ -1,86 +1,80 @@
 import React, { Component } from 'react'
 import Table from 'react-bootstrap/Table'
-
+import { ElectraModelNode } from './../../Model/ElectraModelNode'
 import './DeviceManagerNode.css'
 
 export default class ElectraNode extends Component {
 
     constructor() {
         super();
-        this.state = {
-
-        }
+        this.loadProjectNodes();
     }
 
-    nodeList = [
-        {
-            "id": 6,
-            "type": "micro",
-            "ip": "192.168.1.8",
-            "port": 5000
-        }, {
-            "id": 1,
-            "type": "micro",
-            "ip": "192.168.1.6",
-            "port": 5000
-        }, {
-            "id": 2,
-            "type": "micro",
-            "ip": "192.168.1.6",
-            "port": 5000
-        }, {
-            "id": 3,
-            "type": "nano",
-            "ip": "192.168.1.7",
-            "port": 5000
-        }, {
-            "id": 4,
-            "type": "nano",
-            "ip": "192.168.1.7",
-            "port": 5000
-        }, {
-            "id": 5,
-            "type": "micro",
-            "ip": "192.168.1.8",
-            "port": 5000
-        }
-    ];
+    state = {
+        selectedNode: [],
+        projectNodesList: [],
+
+        isSelectedNode: ""
+
+    }
+
+    loadProjectNodes() {
+
+        let node1 = new ElectraModelNode(1, "192.168.1.7", "5000", "micro");
+        let node2 = new ElectraModelNode(3, "192.168.1.4", "5000", "nano");
+        let node3 = new ElectraModelNode(2, "192.168.1.100", "5000", "micro");
+
+        let nodeList = this.state.projectNodesList;
+        nodeList.push(node1);
+        nodeList.push(node2);
+        nodeList.push(node3);
+
+
+        this.setState({
+            projectNodesList: nodeList
+        })
+    }
+
 
     renderToModify(id) {
-        console.log(id);
+
+        this.setState({
+            isSelectedNode: id
+        })
+        console.log(id + " - " + this.state.isSelectedNode);
+
     }
 
     renderTableNode(nodeList) {
+
         const aa = nodeList.map((item, id) =>
-            <tr key={id} onClick={() => {
+            <tr key={id} className={`tr-dm ${this.state.isSelectedNode === item.id ? "selected-dm-node" : ""}`} onClick={() => {
                 this.renderToModify(item.id)
             }}>
                 <td style={{ width: "50px" }} className="row-gap">{item.id}</td>
                 <td key={item.ip} className="flex4 row-gap">{item.ip}</td>
                 <td className="flex2 row-gap">{item.port}</td>
+                <td className="flex2 row-gap">{item.type}</td>
             </tr>
         );
 
         return (aa);
-
-        // return (
-        //     { listItems }
-        // );
     }
 
     renderTable() {
         return (
             <div id="tableId" className="responsive-node">
                 <Table responsive >
-                    <thead className="bgColor-lgreen">
+                    <thead className="table-header">
                         <tr>
                             <th className="flex1 row-gap">Id</th>
                             <th className="flex4 row-gap">Network IP</th>
                             <th className="flex2 row-gap">Port</th>
+                            <th className="flex2 row-gap">Node Type</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {this.renderTableNode(this.nodeList)}
+                        {this.renderTableNode(this.state.projectNodesList)}
                     </tbody>
                 </Table>
             </div>
@@ -104,7 +98,6 @@ export default class ElectraNode extends Component {
                             </div>
                             <div className="nodeRow">
                                 <div className="keyName keyName-dm">Node Type :</div>
-
                                 <input className="input-dm"></input>
                             </div>
                             <div className="nodeRow">

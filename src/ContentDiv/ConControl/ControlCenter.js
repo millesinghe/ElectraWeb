@@ -3,13 +3,14 @@ import { Button, Card, Dropdown } from 'react-bootstrap'
 
 import * as SwitchCardIndex from "../../DeviceTypeCards/Switch/SwitchIndex"
 import ElectraCard from "../../DeviceTypeCards/ElectraCard";
+import {CardModel} from "./../../Model/CardModel"
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './ControlCenter.css'
 export default class ControlCenter extends Component {
 
-    constructor() {
-        super();
+
+    componentWillMount(){
         this.getDeviceList();
     }
 
@@ -118,17 +119,5 @@ export default class ControlCenter extends Component {
                 </Card>
             </div>
         )
-    }
-}
-
-export class CardModel {
-    constructor(id, name, isOn, location, ip, port, socket) {
-        this.id = id;
-        this.name = name;
-        this.isOn = isOn;
-        this.location = location;
-        this.ip = ip;
-        this.port = port;
-        this.socket = socket;
     }
 }

@@ -16,6 +16,11 @@
     background: #00866c6b;
 }
 
+.table-header{
+    background: #064e42;
+    color: white;
+}
+
 #tableId {
     overflow-y: auto;
 }
@@ -23,6 +28,10 @@
 .table-responsive {
     text-align: center;
     border-collapse: collapse;
+}
+
+.tr-dm:hover{
+    background: #0e141a12;
 }
 
 .responsive-node {
@@ -55,6 +64,10 @@
 .row-gap {
     padding-bottom: 0.5rem !important;
     padding: 0 !important;
+}
+
+.selected-dm-node{
+    background: #94ccc1;
 }
 
 .gap-x {

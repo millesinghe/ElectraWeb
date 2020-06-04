@@ -1,0 +1,1 @@
+api.gateway.port = 8090
