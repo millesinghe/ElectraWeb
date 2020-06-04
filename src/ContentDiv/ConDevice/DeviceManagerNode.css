@@ -1,83 +1,111 @@
-.nodeRow{
+.nodeRow {
     flex-direction: row;
-    overflow:hidden;
+    overflow: hidden;
     flex-wrap: wrap;
     position: relative;
     display: flex;
 }
 
-.keyName{
+.keyName {
     flex: 2 1;
     text-align: left;
     bottom: 0;
 }
 
-.bgColor-lgreen{
+.bgColor-lgreen {
     background: #00866c6b;
 }
 
-.keyName-dm{    
-    /* position: absolute; */
+#tableId {
+    overflow-y: auto;
 }
 
-.table-responsive{
+.table-responsive {
     text-align: center;
+    border-collapse: collapse;
 }
 
-.card-dm{
+.responsive-node {
+    height: 187px
+}
+
+.responsive-device {
+    height: 267px
+}
+
+.card-dm {
     padding: 20px;
 }
 
-.btn-dm{
+.btn-dm {
+    height: 30px;
+    width: 70px;
     margin: 5px;
 }
 
-.input-dm{
+.input-dm {
     background: #94ccc1;
     margin-right: 30px;
 }
 
-.curve-margin{
+.curve-margin {
     border-radius: 25px;
 }
 
-
-.row-gap{
+.row-gap {
     padding-bottom: 0.5rem !important;
-    padding:0 !important;   
+    padding: 0 !important;
 }
 
-.gap-x{
+.gap-x {
     padding-left: 10px;
     padding-right: 10px;
 }
 
-.gap-lx{
+.gap-lx {
     padding-left: 25px;
 }
 
-.gap-rx{
+.gap-rx {
     padding-right: 25px;
 }
 
-.midbar{
-    flex:0.1;
+.midbar {
+    flex: 0.1;
 }
 
-.marginGap{
-    flex:4;
+.marginGap {
+    flex: 4;
 }
 
-input{
-    flex:3;
-    justify-content:flex-start
+input {
+    flex: 3;
+    justify-content: flex-start
 }
 
-.innerWrapper{
-    padding:10px;
-    flex:1;
+.innerWrapper {
+    padding: 10px;
+    flex: 1;
 }
 
-button{
-    flex : 1;
+button {
+    flex: 1;
+    border-radius: 12px !important;
+    background: #04a182;
+    color: white;
 }
+
+.button-import:hover {
+    flex: 1;
+    border-radius: 12px !important;
+    background: #132724eb;
+    color: white;
+}
+
+.button-card:hover {
+    flex: 1;
+    border-radius: 12px !important;
+    background: #132724eb;
+    color: white;
+}
+

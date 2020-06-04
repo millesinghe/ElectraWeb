@@ -41,7 +41,7 @@ export default function DeviceManager() {
             <div className="row" style={{ padding: '26px' }}>
                 <h5> Project : </h5>
                 <input onChange={handleChange} className="flex2 project-input"></input>
-                <button className="flex1" onClick={() => { importProject() }}>Import</button>
+                <button className="flex1 button-import" onClick={() => { importProject() }}>Import</button>
                 <div className="flex1 project-status">{filterMessage()}</div>
                 <div className="flex4"></div>
             </div>
