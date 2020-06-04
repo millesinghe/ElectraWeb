@@ -82,6 +82,34 @@ export default class ElectraNode extends Component {
         );
     }
 
+    renderDetailTab() {
+        return(<div style={{ paddingTop: "21px" }}>
+            <div className="nodeRow">
+                <div className="keyName keyName-dm">Project</div>
+                <input className="input-dm" value={this.props.project.name === "" || this.props.project.name === undefined ? "" : this.props.project.name} disabled ></input>
+            </div>
+            <div className="nodeRow">
+                <div className="keyName keyName-dm">Node Type :</div>
+                <input className="input-dm"></input>
+            </div>
+            <div className="nodeRow">
+                <div className="keyName keyName-dm">IP Address :</div>
+                <input className="input-dm"></input>
+            </div>
+            <div className="nodeRow">
+                <div className="keyName keyName-dm">Port :</div>
+
+                <input className="input-dm"></input>
+            </div>
+            <div className="nodeRow" style={{ padding: "7px 15px" }}>
+                <button className="btn-dm button-card">Add</button>
+                <div className="marginGap"></div>
+                <button className="btn-dm button-card">Save</button>
+                <button className="btn-dm button-card">Cancel</button>
+            </div>
+        </div>);
+    }
+
     render() {
         return (
             <div>
@@ -91,31 +119,7 @@ export default class ElectraNode extends Component {
                     </div>
 
                     <div className="flex1 gap-lx bgColor-lgreen curve-margin">
-                        <div style={{ paddingTop: "21px" }}>
-                            <div className="nodeRow">
-                                <div className="keyName keyName-dm">Project</div>
-                                <input className="input-dm" value={this.props.project.name === "" || this.props.project.name === undefined ? "" : this.props.project.name} disabled ></input>
-                            </div>
-                            <div className="nodeRow">
-                                <div className="keyName keyName-dm">Node Type :</div>
-                                <input className="input-dm"></input>
-                            </div>
-                            <div className="nodeRow">
-                                <div className="keyName keyName-dm">IP Address :</div>
-                                <input className="input-dm"></input>
-                            </div>
-                            <div className="nodeRow">
-                                <div className="keyName keyName-dm">Port :</div>
-
-                                <input className="input-dm"></input>
-                            </div>
-                            <div className="nodeRow" style={{ padding: "7px 15px" }}>
-                                <button className="btn-dm button-card">Add</button>
-                                <div className="marginGap"></div>
-                                <button className="btn-dm button-card">Save</button>
-                                <button className="btn-dm button-card">Cancel</button>
-                            </div>
-                        </div>
+                        {this.renderDetailTab()}
                     </div>
                 </div>
 
