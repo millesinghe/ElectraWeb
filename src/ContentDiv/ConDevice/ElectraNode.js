@@ -54,8 +54,6 @@ export default class ElectraNode extends Component {
                 return;
             }
         })
-        console.log(id + " - " + this.state.selectedNode.ip);
-
     }
 
     renderTableNode(nodeList) {
@@ -138,7 +136,6 @@ export default class ElectraNode extends Component {
         } else if (attrib === 'port') {
             this.setState(prevState => ({ selectedNode: { ...prevState.selectedNode, port: event.target.value } }));
         }
-
     }
 
     render() {
