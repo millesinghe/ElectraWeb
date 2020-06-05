@@ -23,6 +23,7 @@
 
 #tableId {
     overflow-y: auto;
+    background: #94ccc11f;
 }
 
 .table-responsive {
@@ -35,7 +36,7 @@
 }
 
 .responsive-node {
-    height: 187px
+    height: 215px
 }
 
 .responsive-device {
