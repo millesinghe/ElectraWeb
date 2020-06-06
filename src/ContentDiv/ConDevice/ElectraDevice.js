@@ -9,7 +9,12 @@ export default class ElectraDevice extends Component {
         projectDevicesList: [],
 
         isSelectedDevices: "",
-        selectedDevice: {}
+        selectedDevice: {},
+        
+        isNew: false,
+        beforeDevice: {},
+
+        isModified: false
 
     }
 
@@ -42,17 +47,6 @@ export default class ElectraDevice extends Component {
 
         let deviceList = this.state.projectDevicesList;
 
-        // let device1 = new ElectraModelDevice(1, "MilindaSwitch", "MilindaRoom", "Bulb", "0", "MilindaHouse", "1", "3");
-        // let device2 = new ElectraModelDevice(2, "MilindaFan", "MilindaRoom", "Fan", "0", "MilindaHouse", "1", "3");
-        // let device3 = new ElectraModelDevice(3, "LivingAC", "LivingRoom", "Air Conditioner", "0", "MilindaHouse", "2", "3");
-        // let device4 = new ElectraModelDevice(4, "LivingLight", "LivingRoom", "Bulb", "0", "MilindaHouse", "2", "3");
-
-        // nodeList.push(device1);
-        // nodeList.push(device3);
-        // nodeList.push(device2);
-        // nodeList.push(device4);
-
-
         this.setState({
             projectDevicesList: deviceList
         })
@@ -74,7 +68,7 @@ export default class ElectraDevice extends Component {
     }
 
 
-    renderTableNode(deviceList) {
+    renderTableDevice(deviceList) {
 
         const aa = deviceList.map((item, id) =>
             <tr key={id} className={`tr-dm ${this.state.isSelectedDevices === item.id ? "selected-dm-node" : ""}`} onClick={() => {
@@ -103,7 +97,7 @@ export default class ElectraDevice extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.renderTableNode(this.state.projectDevicesList)}
+                        {this.renderTableDevice(this.state.projectDevicesList)}
                     </tbody>
                 </Table>
             </div>
@@ -142,16 +136,23 @@ export default class ElectraDevice extends Component {
                 <input className="input-dm" onChange={this.OnChangeListnerText.bind(this, "slot")} value={this.state.selectedDevice.connectorSlot === "" || this.state.selectedDevice.connectorSlot === undefined ? "" : this.state.selectedDevice.connectorSlot}></input>
             </div>
             <div className="nodeRow" style={{ padding: "7px 15px" }}>
-                <button className="btn-dm button-card">Add</button>
+                <button disabled={this.state.isModified} className="btn-dm button-card" onClick={this.actionAdd.bind(this)}>Add</button>
                 <div className="marginGap"></div>
-                <button className="btn-dm button-card">Save</button>
-                <button className="btn-dm button-card">Cancel</button>
+                <button disabled={!this.state.isModified} className="btn-dm button-card" onClick={this.actionOk.bind(this)}>Save</button>
+                <button disabled={!this.state.isModified} className="btn-dm button-card" onClick={this.actionCancel.bind(this)}>Cancel</button>
             </div>
         </div>);
     }
 
     OnChangeListnerText(attrib, event) {
         event.persist();
+        
+        if(!this.state.isModified){
+            this.setState({
+                isModified: true,
+                beforeDevice: this.state.selectedDevice,
+            });
+        }
 
         if (attrib === 'name') {
             this.setState(prevState => ({ selectedDevice: { ...prevState.selectedDevice, name: event.target.value } }));
@@ -168,6 +169,38 @@ export default class ElectraDevice extends Component {
         }
 
     }
+
+    actionAdd() {
+        this.setState({
+            isModified: true,
+            isNew: true,
+            beforeDevice: this.state.selectedDevice,
+            selectedDevice: {}
+
+        });
+
+        console.log("Clicked Add New")
+    }
+
+    actionOk() {
+        let aa = this.state.selectedDevice;
+
+        this.setState({ isNew: false, isModified: false });
+
+        console.log("Clicked OK" + aa);
+    }
+
+    actionCancel() {
+        this.setState({
+            isModified: false,
+            isNew: false,
+            selectedDevice: this.state.beforeDevice,
+            beforeDevice: {}
+
+        });
+        console.log("Clicked Cancel")
+    }
+
 
     render() {
         return (
