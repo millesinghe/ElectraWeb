@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Table from 'react-bootstrap/Table'
-import { ElectraModelNode } from './../../Model/ElectraModelNode'
 import './DeviceManagerNode.css'
 
 export default class ElectraNode extends Component {
@@ -9,7 +8,12 @@ export default class ElectraNode extends Component {
         projectNodesList: [],
 
         isSelectedNode: "",
-        selectedNode: {}
+        selectedNode: {},
+
+        isNew: false,
+        beforeNode: {},
+
+        isModified: false
     }
 
     constructor() {
@@ -22,20 +26,12 @@ export default class ElectraNode extends Component {
         let varProject = this.props === undefined ? "" : this.props.project;
 
         let temp = (!(varProject.nodesList === "" || varProject.nodesList === undefined)) && (prevProps.project !== this.props.project) ? this.setState({ projectNodesList: varProject.nodesList }) : ""
-
+        console.debug(temp);
     }
 
     loadProjectNodes() {
 
         let nodeList = this.state.projectNodesList;
-
-        // let node1 = new ElectraModelNode(1, "192.168.1.7", "5000", "micro");
-        // let node2 = new ElectraModelNode(3, "192.168.1.4", "5000", "nano");
-        // let node3 = new ElectraModelNode(2, "192.168.1.100", "5000", "micro");
-
-        // nodeList.push(node1);
-        // nodeList.push(node2);
-        // nodeList.push(node3);
 
         this.setState({
             projectNodesList: nodeList
@@ -116,10 +112,10 @@ export default class ElectraNode extends Component {
                 <input className="input-dm" onChange={this.OnChangeListnerText.bind(this, "port")} value={this.state.selectedNode.port === "" || this.state.selectedNode.port === undefined ? "" : this.state.selectedNode.port}></input>
             </div>
             <div className="nodeRow" style={{ padding: "7px 15px" }}>
-                <button className="btn-dm button-card">Add</button>
+                <button disabled={this.state.isModified} className="btn-dm button-card" onClick={this.actionAdd.bind(this)}>Add</button>
                 <div className="marginGap"></div>
-                <button className="btn-dm button-card">Save</button>
-                <button className="btn-dm button-card">Cancel</button>
+                <button disabled={!this.state.isModified} className="btn-dm button-card" onClick={this.actionOk.bind(this)}>Save</button>
+                <button disabled={!this.state.isModified} className="btn-dm button-card" onClick={this.actionCancel.bind(this)}>Cancel</button>
             </div>
         </div>);
     }
@@ -127,15 +123,53 @@ export default class ElectraNode extends Component {
     OnChangeListnerText(attrib, event) {
         event.persist();
 
-        if (attrib === 'id') {
-            this.setState(prevState => ({ selectedNode: { ...prevState.selectedNode, id: event.target.value } }));
-        } else if (attrib === 'type') {
-            this.setState(prevState => ({ selectedNode: { ...prevState.selectedNode, type: event.target.value } }));
-        } else if (attrib === 'ip') {
-            this.setState(prevState => ({ selectedNode: { ...prevState.selectedNode, ip: event.target.value } }));
-        } else if (attrib === 'port') {
-            this.setState(prevState => ({ selectedNode: { ...prevState.selectedNode, port: event.target.value } }));
+        if(!this.state.isModified){
+            this.setState({
+                isModified: true,
+                beforeNode: this.state.selectedNode,
+            });
         }
+        
+        if (attrib === 'id') {
+            this.setState(prevState => ({selectedNode: { ...prevState.selectedNode, id: event.target.value } }));
+        } else if (attrib === 'type') {
+            this.setState(prevState => ({selectedNode: { ...prevState.selectedNode, type: event.target.value } }));
+        } else if (attrib === 'ip') {
+            this.setState(prevState => ({selectedNode: { ...prevState.selectedNode, ip: event.target.value } }));
+        } else if (attrib === 'port') {
+            this.setState(prevState => ({selectedNode: { ...prevState.selectedNode, port: event.target.value } }));
+        }
+    }
+
+    actionAdd() {
+        this.setState({
+            isModified: true,
+            isNew: true,
+            beforeNode: this.state.selectedNode,
+            selectedNode: {}
+
+        });
+
+        console.log("Clicked Add New")
+    }
+
+    actionOk() {
+        let aa = this.state.selectedNode;
+
+        this.setState({ isNew: false, isModified: false });
+
+        console.log("Clicked OK" + aa);
+    }
+
+    actionCancel() {
+        this.setState({
+            isModified: false,
+            isNew: false,
+            selectedNode: this.state.beforeNode,
+            beforeNode: {}
+
+        });
+        console.log("Clicked Cancel")
     }
 
     render() {

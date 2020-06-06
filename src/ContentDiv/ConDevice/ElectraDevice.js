@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Table from 'react-bootstrap/Table'
-import { ElectraModelDevice } from "./../../Model/ElectraModelDevice"
 
 import './DeviceManagerNode.css'
 
@@ -19,7 +18,6 @@ export default class ElectraDevice extends Component {
         this.loadProjectDevices();
     }
 
-
     componentDidUpdate(prevProps, prevState) {
         let varProject = this.props === undefined ? "" : this.props.project;
 
@@ -28,9 +26,12 @@ export default class ElectraDevice extends Component {
 
         let deviceList = []
         if (tempNodeList.length > 0) {
+            // eslint-disable-next-line
             let tempDevices = tempNodeList.map(scNode => {
+                // eslint-disable-next-line
                 scNode.deviceList.map(dev => { dev.connectedNode = scNode.id; deviceList.push(dev)});
             })
+            console.debug(tempDevices);
            this.setState({ projectDevicesList: deviceList });
 
         }

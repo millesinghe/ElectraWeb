@@ -53,6 +53,14 @@
     margin: 5px;
 }
 
+.btn-dm:disabled{
+    background: #04a18212;
+}
+
+.btn-dm:disabled:hover{
+    background: #04a18212;
+}
+
 .input-dm {
     background: #94ccc1;
     margin-right: 30px;
