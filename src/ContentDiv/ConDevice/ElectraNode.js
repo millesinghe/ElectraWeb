@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import Table from 'react-bootstrap/Table'
+import DM from './DeviceManager'
 import './DeviceManagerNode.css'
+
+import axios from 'axios';
 
 export default class ElectraNode extends Component {
 
@@ -10,6 +13,7 @@ export default class ElectraNode extends Component {
         isSelectedNode: "",
         selectedNode: {},
 
+        isDelete : false,
         isNew: false,
         beforeNode: {},
 
@@ -68,6 +72,24 @@ export default class ElectraNode extends Component {
         return (aa);
     }
 
+    reRenderTable(data) {
+        let modifiedNodeList = [];
+        this.state.projectNodesList.forEach(node => {
+            if (node.id === data.id) {
+                if(!this.state.isDelete){
+                    modifiedNodeList.push(data)
+                }
+            } else{
+                modifiedNodeList.push(node);
+            }
+        });
+        if(this.state.isNew){
+            modifiedNodeList.push(data);
+        }
+        this.setState({ isNew: false, isDelete: false, isModified: false, "projectNodesList": modifiedNodeList })
+    }
+
+
     renderTable() {
         return (
             <div id="tableId" className="responsive-node">
@@ -113,6 +135,7 @@ export default class ElectraNode extends Component {
             </div>
             <div className="nodeRow" style={{ padding: "7px 15px" }}>
                 <button disabled={this.state.isModified} className="btn-dm button-card" onClick={this.actionAdd.bind(this)}>Add</button>
+                <button disabled={this.state.isModified} className="btn-dm button-card" onClick={this.actionRemove.bind(this)}>Remove</button>
                 <div className="marginGap"></div>
                 <button disabled={!this.state.isModified} className="btn-dm button-card" onClick={this.actionOk.bind(this)}>Save</button>
                 <button disabled={!this.state.isModified} className="btn-dm button-card" onClick={this.actionCancel.bind(this)}>Cancel</button>
@@ -123,21 +146,21 @@ export default class ElectraNode extends Component {
     OnChangeListnerText(attrib, event) {
         event.persist();
 
-        if(!this.state.isModified){
+        if (!this.state.isModified) {
             this.setState({
                 isModified: true,
                 beforeNode: this.state.selectedNode,
             });
         }
-        
+
         if (attrib === 'id') {
-            this.setState(prevState => ({selectedNode: { ...prevState.selectedNode, id: event.target.value } }));
+            this.setState(prevState => ({ selectedNode: { ...prevState.selectedNode, id: event.target.value } }));
         } else if (attrib === 'type') {
-            this.setState(prevState => ({selectedNode: { ...prevState.selectedNode, type: event.target.value } }));
+            this.setState(prevState => ({ selectedNode: { ...prevState.selectedNode, type: event.target.value } }));
         } else if (attrib === 'ip') {
-            this.setState(prevState => ({selectedNode: { ...prevState.selectedNode, ip: event.target.value } }));
+            this.setState(prevState => ({ selectedNode: { ...prevState.selectedNode, ip: event.target.value } }));
         } else if (attrib === 'port') {
-            this.setState(prevState => ({selectedNode: { ...prevState.selectedNode, port: event.target.value } }));
+            this.setState(prevState => ({ selectedNode: { ...prevState.selectedNode, port: event.target.value } }));
         }
     }
 
@@ -145,20 +168,127 @@ export default class ElectraNode extends Component {
         this.setState({
             isModified: true,
             isNew: true,
+            isDelete: false,
             beforeNode: this.state.selectedNode,
             selectedNode: {}
 
         });
+    }
 
-        console.log("Clicked Add New")
+    actionRemove() {
+        this.setState({
+            isModified: false,
+            isNew: false,
+            isDelete: true,
+            beforeNode: {},
+            selectedNode: {}
+
+        });
+        axios.delete("http://localhost:5000/meta/node/" + this.state.selectedNode.id)
+            .then(res => res.data)
+            .then((data) => {
+                this.reRenderTable(data);
+            }).catch(error => {
+
+            })
+            .catch((error) => {
+                // Error
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                    // } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the 
+                    // browser and an instance of
+                    // http.ClientRequest in node.js
+                    //     console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+                console.log(error.config);
+            });
+
     }
 
     actionOk() {
-        let aa = this.state.selectedNode;
 
-        this.setState({ isNew: false, isModified: false });
+        console.log("Clicked OK");
 
-        console.log("Clicked OK" + aa);
+        let projectObj = this.props.project;
+
+        let tempNode = {};
+        tempNode = this.state.selectedNode;
+
+        delete projectObj.nodesList;
+        delete tempNode.deviceList;
+        tempNode["project"] = projectObj;
+
+        if (this.state.isNew) {
+            // Add New Node
+
+            axios.post("http://localhost:5000/meta/node", this.state.selectedNode)
+                .then(res => res.data)
+                .then((data) => {
+                    this.reRenderTable(data);
+                }).catch(error => {
+
+                })
+                .catch((error) => {
+                    // Error
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                        // } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the 
+                        // browser and an instance of
+                        // http.ClientRequest in node.js
+                        //     console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                    console.log(error.config);
+                });
+            console.log("Add New Node");
+        } else {
+            // Update Node
+            axios.put("http://localhost:5000/meta/node/" + this.state.isSelectedNode, this.state.selectedNode)
+                .then(res => res.data)
+                .then((data) => {
+                    this.reRenderTable(data);
+                }).catch(error => {
+
+                })
+                .catch((error) => {
+                    // Error
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                        // } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the 
+                        // browser and an instance of
+                        // http.ClientRequest in node.js
+                        //     console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                    console.log(error.config);
+                });
+            console.log("Update Node");
+        }
     }
 
     actionCancel() {
