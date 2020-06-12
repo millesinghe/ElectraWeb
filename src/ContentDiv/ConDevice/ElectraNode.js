@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Table from 'react-bootstrap/Table'
-import DM from './DeviceManager'
 import './DeviceManagerNode.css'
 
 import axios from 'axios';
@@ -216,12 +215,9 @@ export default class ElectraNode extends Component {
 
     actionOk() {
 
-        console.log("Clicked OK");
-
         let projectObj = this.props.project;
 
-        let tempNode = {};
-        tempNode = this.state.selectedNode;
+        let tempNode = this.state.selectedNode;
 
         delete projectObj.nodesList;
         delete tempNode.deviceList;

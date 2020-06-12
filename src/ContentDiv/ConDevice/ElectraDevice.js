@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Table from 'react-bootstrap/Table'
+import axios from 'axios';
 
 import './DeviceManagerNode.css'
 
@@ -10,7 +11,8 @@ export default class ElectraDevice extends Component {
 
         isSelectedDevices: "",
         selectedDevice: {},
-        
+
+        isDelete: false,
         isNew: false,
         beforeDevice: {},
 
@@ -34,13 +36,13 @@ export default class ElectraDevice extends Component {
             // eslint-disable-next-line
             let tempDevices = tempNodeList.map(scNode => {
                 // eslint-disable-next-line
-                scNode.deviceList.map(dev => { dev.connectedNode = scNode.id; deviceList.push(dev)});
+                scNode.deviceList.map(dev => { dev.connectedNode = scNode.id; deviceList.push(dev) });
             })
             console.debug(tempDevices);
-           this.setState({ projectDevicesList: deviceList });
+            this.setState({ projectDevicesList: deviceList });
 
         }
-        
+
     }
 
     loadProjectDevices() {
@@ -82,6 +84,24 @@ export default class ElectraDevice extends Component {
         );
 
         return (aa);
+    }
+
+    reRenderTable(data) {
+        let modifiedDeviceList = [];
+        this.state.projectDevicesList.forEach(node => {
+            if (node.id === data.id) {
+                if (!this.state.isDelete) {
+                    data.connectedNode = node.connectedNode;
+                    modifiedDeviceList.push(data)
+                }
+            } else {
+                modifiedDeviceList.push(node);
+            }
+        });
+        if (this.state.isNew) {
+            modifiedDeviceList.push(data);
+        }
+        this.setState({ isNew: false, isDelete: false, isModified: false, "projectDevicesList": modifiedDeviceList })
     }
 
     renderTable() {
@@ -129,7 +149,7 @@ export default class ElectraDevice extends Component {
             </div>
             <div className="nodeRow">
                 <div className="keyName">Connected Node</div>
-                <input className="input-dm" onChange={this.OnChangeListnerText.bind(this, "connectedNode")} value={this.state.selectedDevice.connectedNode === "" || this.state.selectedDevice.connectedNode === undefined ? "" : this.state.selectedDevice.connectedNode}></input>
+                <input className="input-dm" onChange={this.OnChangeListnerText.bind(this, "connectedNode")} value={this.state.selectedDevice.connectedNode === "" || this.state.selectedDevice.connectedNode === undefined ? "" : this.state.selectedDevice.connectedNode.id === undefined ? this.state.selectedDevice.connectedNode : this.state.selectedDevice.connectedNode.id}></input>
             </div>
             <div className="nodeRow">
                 <div className="keyName">Device Connector Slot</div>
@@ -137,6 +157,7 @@ export default class ElectraDevice extends Component {
             </div>
             <div className="nodeRow" style={{ padding: "7px 15px" }}>
                 <button disabled={this.state.isModified} className="btn-dm button-card" onClick={this.actionAdd.bind(this)}>Add</button>
+                <button disabled={this.state.isModified} className="btn-dm button-card" onClick={this.actionRemove.bind(this)}>Remove</button>
                 <div className="marginGap"></div>
                 <button disabled={!this.state.isModified} className="btn-dm button-card" onClick={this.actionOk.bind(this)}>Save</button>
                 <button disabled={!this.state.isModified} className="btn-dm button-card" onClick={this.actionCancel.bind(this)}>Cancel</button>
@@ -146,8 +167,8 @@ export default class ElectraDevice extends Component {
 
     OnChangeListnerText(attrib, event) {
         event.persist();
-        
-        if(!this.state.isModified){
+
+        if (!this.state.isModified) {
             this.setState({
                 isModified: true,
                 beforeDevice: this.state.selectedDevice,
@@ -182,12 +203,113 @@ export default class ElectraDevice extends Component {
         console.log("Clicked Add New")
     }
 
+    actionRemove() {
+        this.setState({
+            isModified: false,
+            isNew: false,
+            isDelete: true,
+            beforeNode: {},
+            selectedNode: {}
+
+        });
+
+    }
+
+    buildURLMap(node, device) {
+        let urls = {};
+        urls["Switch-On"] = "http://" + node.ip + ":" + node.port + "/" + device.connectorSlot + "/on";
+        urls["Switch-Off"] = "http://" + node.ip + ":" + node.port + "/" + device.connectorSlot + "/off";
+        return urls;
+    }
+
     actionOk() {
-        let aa = this.state.selectedDevice;
+
+        let projectObj =  JSON.parse(JSON.stringify(this.props.project));
+        let tempDevice = this.state.selectedDevice;
+        let nodeObj = {};
+
+        projectObj.nodesList.forEach(nodeElement => {
+            if (nodeElement.id === tempDevice.connectedNode) {
+                nodeObj = nodeElement;
+                delete nodeObj.deviceList;
+                delete projectObj.nodesList;
+                nodeObj["project"] = projectObj;
+            }
+        });
+
+        tempDevice["urlMap"] = this.buildURLMap(nodeObj, tempDevice);
+
+        tempDevice["connectedNode"] = nodeObj;
+
+        console.log("end0" + tempDevice);
+        if (this.state.isNew) {
+            // Add New Node
+
+            axios.post("http://localhost:4999/meta/device/s", this.state.selectedDevice)
+                .then(res => res.data)
+                .then((data) => {
+                    this.reRenderTable(data);
+                    console.log(data);
+                }).catch(error => {
+
+                })
+                .catch((error) => {
+                    // Error
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                        // } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the 
+                        // browser and an instance of
+                        // http.ClientRequest in node.js
+                        //     console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                    console.log(error.config);
+                });
+            console.log("Add New Node");
+        } else {
+            // Update Node
+            axios.put("http://localhost:5000/meta/device/" + this.state.selectedDevice.id, this.state.selectedDevice)
+                .then(res => res.data)
+                .then((data) => {
+                    this.reRenderTable(data);
+                    console.log(data);
+                }).catch(error => {
+
+                })
+                .catch((error) => {
+                    // Error
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                        // } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the 
+                        // browser and an instance of
+                        // http.ClientRequest in node.js
+                        //     console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                    console.log(error.config);
+                });
+            console.log("Update Node");
+        }
 
         this.setState({ isNew: false, isModified: false });
 
-        console.log("Clicked OK" + aa);
+        console.log("Clicked OK" + tempDevice);
     }
 
     actionCancel() {
