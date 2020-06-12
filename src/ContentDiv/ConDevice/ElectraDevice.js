@@ -16,7 +16,9 @@ export default class ElectraDevice extends Component {
         isNew: false,
         beforeDevice: {},
 
-        isModified: false
+        isModified: false,
+
+        errorMsg: ""
 
     }
 
@@ -86,12 +88,12 @@ export default class ElectraDevice extends Component {
         return (aa);
     }
 
-    reRenderTable(data) {
+    reRenderTable(data, nodeId) {
         let modifiedDeviceList = [];
         this.state.projectDevicesList.forEach(node => {
             if (node.id === data.id) {
                 if (!this.state.isDelete) {
-                    data.connectedNode = node.connectedNode;
+                    data.connectedNode = nodeId;
                     modifiedDeviceList.push(data)
                 }
             } else {
@@ -99,6 +101,7 @@ export default class ElectraDevice extends Component {
             }
         });
         if (this.state.isNew) {
+            data["connectedNode"] = nodeId;
             modifiedDeviceList.push(data);
         }
         this.setState({ isNew: false, isDelete: false, isModified: false, "projectDevicesList": modifiedDeviceList })
@@ -213,6 +216,33 @@ export default class ElectraDevice extends Component {
 
         });
 
+        axios.delete("http://localhost:5000/meta/device/" + this.state.selectedDevice.id)
+            .then(res => res.data)
+            .then((data) => {
+                this.reRenderTable(data);
+            }).catch(error => {
+
+            })
+            .catch((error) => {
+                // Error
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+
+                    //console.log(error.response.headers);
+                    // } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the 
+                    // browser and an instance of
+                    // http.ClientRequest in node.js
+                    //     console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+                console.log(error.config);
+            });
+
     }
 
     buildURLMap(node, device) {
@@ -224,12 +254,12 @@ export default class ElectraDevice extends Component {
 
     actionOk() {
 
-        let projectObj =  JSON.parse(JSON.stringify(this.props.project));
+        let projectObj = JSON.parse(JSON.stringify(this.props.project));
         let tempDevice = this.state.selectedDevice;
         let nodeObj = {};
 
         projectObj.nodesList.forEach(nodeElement => {
-            if (nodeElement.id === tempDevice.connectedNode) {
+            if (nodeElement.id == tempDevice.connectedNode) {
                 nodeObj = nodeElement;
                 delete nodeObj.deviceList;
                 delete projectObj.nodesList;
@@ -244,72 +274,50 @@ export default class ElectraDevice extends Component {
         console.log("end0" + tempDevice);
         if (this.state.isNew) {
             // Add New Node
-
-            axios.post("http://localhost:4999/meta/device/s", this.state.selectedDevice)
+            tempDevice["project"] = this.props.project.name;
+            axios.post("http://localhost:5000/meta/device", this.state.selectedDevice)
                 .then(res => res.data)
                 .then((data) => {
-                    this.reRenderTable(data);
+                    this.reRenderTable(data, this.state.selectedDevice.connectedNode.id);
                     console.log(data);
-                }).catch(error => {
-
-                })
-                .catch((error) => {
+                }).catch((error) => {
                     // Error
                     if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
-                        // } else if (error.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the 
-                        // browser and an instance of
-                        // http.ClientRequest in node.js
-                        //     console.log(error.request);
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        console.log('Error', error.message);
+                        let errorMessage = "";
+                        if (error.response.data.message.includes("TransientPropertyValueException")) {
+                            errorMessage = "Invalid Node for configuration"
+                        }
+                        this.setState({
+                            errorMsg: errorMessage
+                        });
+                        console.log(error.response.status + " - " + error.response.data);
                     }
-                    console.log(error.config);
                 });
-            console.log("Add New Node");
         } else {
             // Update Node
             axios.put("http://localhost:5000/meta/device/" + this.state.selectedDevice.id, this.state.selectedDevice)
                 .then(res => res.data)
                 .then((data) => {
-                    this.reRenderTable(data);
+                    this.reRenderTable(data, this.state.selectedDevice.connectedNode.id);
                     console.log(data);
-                }).catch(error => {
-
-                })
-                .catch((error) => {
+                }).catch((error) => {
                     // Error
                     if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
-                        // } else if (error.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the 
-                        // browser and an instance of
-                        // http.ClientRequest in node.js
-                        //     console.log(error.request);
+                        let errorMessage = "";
+                        if (error.response.data.message.includes("TransientPropertyValueException")) {
+                            errorMessage = "Invalid Node for configuration"
+                        }
+                        this.setState({
+                            errorMsg: errorMessage
+                        });
+                        console.log(error.response.status + " - " + error.response.data);
                     } else {
                         // Something happened in setting up the request that triggered an Error
                         console.log('Error', error.message);
                     }
                     console.log(error.config);
                 });
-            console.log("Update Node");
         }
-
-        this.setState({ isNew: false, isModified: false });
-
-        console.log("Clicked OK" + tempDevice);
     }
 
     actionCancel() {
