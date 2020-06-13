@@ -8,14 +8,14 @@ h1, h5 {
     color: #04886f;
 }
 
-.project-input{
+/* .project-input{
     margin-left: 10px;
     margin-right: 10px;  
     outline: 0;
     border-width: 0 0 2px;
     border-color: #04886f;
     background: #eeeeee;
-}
+} */
 
 .project-status{
     padding-top: 4px;
