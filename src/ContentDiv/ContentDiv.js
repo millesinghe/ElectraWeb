@@ -2,10 +2,9 @@ import React from 'react'
 import DeviceManager from './ConDevice/DeviceManager'
 import ControlCenter from './ConControl/ControlCenter'
 
-export default class ContentDiv extends React.Component {
+export default function ContentDiv(props) {
 
-
-    renderContentView(val) {
+    function renderContentView(val) {
         let renderView;
         if (val === "Control Room") {
             renderView = <>
@@ -28,12 +27,12 @@ export default class ContentDiv extends React.Component {
         return renderView;
     }
 
-    render() {
-        return (
-            <div>
-                {this.renderContentView(this.props.renderView)}
-            </div>
-        )
-    }
+
+    return (
+        <div>
+            {renderContentView(props.renderView)}
+        </div>
+    )
+
 
 }

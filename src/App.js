@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import './App.css'
 
@@ -6,29 +6,24 @@ import HeaderDiv from './HeaderDiv/Header';
 import NavDiv from './NavDiv/NavDiv';
 import ContentDiv from './ContentDiv/ContentDiv';
 
-export default class App extends React.Component {
+export default function App() {
 
-  constructor(){
-    super();
-    this.state = {
-      navClick :"Control Room"
-    }
+  const [navClick, setNavClick] = useState("Control Room");
+
+  function updateAppNaviState(val) {
+    setNavClick(val);
   }
 
-  updateAppNaviState(val){
-    this.setState({navClick : val})
- 
-  }
-
-  render() {
-    return (
-      <>
-        <HeaderDiv />
+  return (
+    <>
+      {/* <h1>Project Id - {projectId} </h1>
+      {isLogged ? <p>User Logged in Successfully</p> : <p>No User logged in</p>}
+      <button onClick={() => dispatch(selectedProject(myProject))}>Login</button> */}
+      <HeaderDiv />
       <div className="AppRow">
-        <div id="navSide" className="columnApp"><NavDiv updateAppState= {this.updateAppNaviState.bind(this)} /></div>
-        <div id="homeContent" ><ContentDiv renderView = {this.state.navClick}/></div>
+        <div id="navSide" className="columnApp"><NavDiv updateAppState={updateAppNaviState.bind(this)} /></div>
+        <div id="homeContent" ><ContentDiv renderView={navClick} /></div>
       </div>
-      </>
-    )
-  }
+    </>
+  )
 }

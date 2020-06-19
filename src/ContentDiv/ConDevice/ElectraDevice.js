@@ -41,10 +41,11 @@ export default class ElectraDevice extends Component {
                 scNode.deviceList.map(dev => { dev.connectedNode = scNode.id; deviceList.push(dev) });
             })
             console.debug(tempDevices);
-            this.setState({ projectDevicesList: deviceList });
 
         }
-
+        if (prevProps !== this.props) {
+            this.setState({ projectDevicesList: deviceList });
+        }
     }
 
     loadProjectDevices() {
@@ -216,7 +217,7 @@ export default class ElectraDevice extends Component {
 
         });
 
-        axios.delete("http://localhost:5000/meta/device/" + this.state.selectedDevice.id)
+        axios.delete("http://DESKTOP-7KQ9JNL:5000/meta/device/" + this.state.selectedDevice.id)
             .then(res => res.data)
             .then((data) => {
                 this.reRenderTable(data);
@@ -259,6 +260,7 @@ export default class ElectraDevice extends Component {
         let nodeObj = {};
 
         projectObj.nodesList.forEach(nodeElement => {
+            // eslint-disable-next-line
             if (nodeElement.id == tempDevice.connectedNode) {
                 nodeObj = nodeElement;
                 delete nodeObj.deviceList;
@@ -275,7 +277,7 @@ export default class ElectraDevice extends Component {
         if (this.state.isNew) {
             // Add New Node
             tempDevice["project"] = this.props.project.name;
-            axios.post("http://localhost:5000/meta/device", this.state.selectedDevice)
+            axios.post("http://DESKTOP-7KQ9JNL:5000/meta/device", this.state.selectedDevice)
                 .then(res => res.data)
                 .then((data) => {
                     this.reRenderTable(data, this.state.selectedDevice.connectedNode.id);
@@ -295,7 +297,7 @@ export default class ElectraDevice extends Component {
                 });
         } else {
             // Update Node
-            axios.put("http://localhost:5000/meta/device/" + this.state.selectedDevice.id, this.state.selectedDevice)
+            axios.put("http://DESKTOP-7KQ9JNL:5000/meta/device/" + this.state.selectedDevice.id, this.state.selectedDevice)
                 .then(res => res.data)
                 .then((data) => {
                     this.reRenderTable(data, this.state.selectedDevice.connectedNode.id);

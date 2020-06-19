@@ -12,7 +12,7 @@ export default class ElectraNode extends Component {
         isSelectedNode: "",
         selectedNode: {},
 
-        isDelete : false,
+        isDelete: false,
         isNew: false,
         beforeNode: {},
 
@@ -28,7 +28,7 @@ export default class ElectraNode extends Component {
     componentDidUpdate(prevProps, prevState) {
         let varProject = this.props === undefined ? "" : this.props.project;
 
-        let temp = (!(varProject.nodesList === "" || varProject.nodesList === undefined)) && (prevProps.project !== this.props.project) ? this.setState({ projectNodesList: varProject.nodesList }) : ""
+        let temp = (!(varProject.nodesList === "" || varProject.nodesList === undefined)) && (prevProps.project !== this.props.project) ? this.setState({ projectNodesList: varProject.nodesList }) : prevProps !== this.props ? this.setState({ projectNodesList: [] }) : "";
         console.debug(temp);
     }
 
@@ -75,14 +75,14 @@ export default class ElectraNode extends Component {
         let modifiedNodeList = [];
         this.state.projectNodesList.forEach(node => {
             if (node.id === data.id) {
-                if(!this.state.isDelete){
+                if (!this.state.isDelete) {
                     modifiedNodeList.push(data)
                 }
-            } else{
+            } else {
                 modifiedNodeList.push(node);
             }
         });
-        if(this.state.isNew){
+        if (this.state.isNew) {
             modifiedNodeList.push(data);
         }
         this.setState({ isNew: false, isDelete: false, isModified: false, "projectNodesList": modifiedNodeList })
@@ -183,7 +183,7 @@ export default class ElectraNode extends Component {
             selectedNode: {}
 
         });
-        axios.delete("http://localhost:5000/meta/node/" + this.state.selectedNode.id)
+        axios.delete("http://DESKTOP-7KQ9JNL:5000/meta/node/" + this.state.selectedNode.id)
             .then(res => res.data)
             .then((data) => {
                 this.reRenderTable(data);
@@ -226,7 +226,7 @@ export default class ElectraNode extends Component {
         if (this.state.isNew) {
             // Add New Node
 
-            axios.post("http://localhost:5000/meta/node", this.state.selectedNode)
+            axios.post("http://DESKTOP-7KQ9JNL:5000/meta/node", this.state.selectedNode)
                 .then(res => res.data)
                 .then((data) => {
                     this.reRenderTable(data);
@@ -256,7 +256,7 @@ export default class ElectraNode extends Component {
             console.log("Add New Node");
         } else {
             // Update Node
-            axios.put("http://localhost:5000/meta/node/" + this.state.isSelectedNode, this.state.selectedNode)
+            axios.put("http://DESKTOP-7KQ9JNL:5000/meta/node/" + this.state.isSelectedNode, this.state.selectedNode)
                 .then(res => res.data)
                 .then((data) => {
                     this.reRenderTable(data);

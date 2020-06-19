@@ -16,9 +16,8 @@ h3 {
 }
 
 .project-select:focus{
-  margin-right: 35px;
   color: white;
-  background: #026352db;
+  background: #616161;
   border-radius: 8px;
 }
 

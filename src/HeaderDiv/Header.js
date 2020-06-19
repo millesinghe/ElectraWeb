@@ -1,42 +1,23 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, /** useSelector, */ } from 'react-redux';
 import axios from 'axios';
+
+import {actionSelectedProject} from './../redux/actions'
 
 import './Header.css'
 
-export default class HeaderDiv extends Component {
+export default function HeaderDiv() {
 
-  state = {
-    projectName: "",
-    btnImportPressed: false,
-    project: {
-      connection_Password: "",
-      connection_SSID: "",
-      id: 0,
-      name: ""
-    },
-    projectList: []
-  }
+  const dispatch = useDispatch();
 
-  render() {
-    return (
-      <div className="blur d-flex">
-        <div className="mr-auto p-2"><div><h3 style={{ marginBottom: 0, marginLeft: "15px" }}> Electra </h3></div></div>
-        <div className="row p-2" style={{ padding: '26px' }}>
-          <h6 style={{ color: "white", marginTop: "7px", paddingRight: "10px" }}> Project : </h6>
-          {/*<input onChange={this.handleChange} className="flex2 project-input"></input>
-          <button className="flex1 button-import" onClick={() => { this.importProject() }}>Import</button> */}
-          <select value={this.state.projectName} onChange={e => this.handleChange(e)} className="project-select">
-            {this.state.projectList.map((team) => <option key={team.display} value={team.display}>{team.display}</option>)}
-          </select>
-          <div className="flex1 project-status">{this.filterMessage()}</div>
-          <div className="flex4"></div>
-        </div>
-      </div>
-    )
-  }
+  const [projectName, setProjectName] = useState("");
+  const [projectList, setProjectList] = useState([]);
 
-  componentDidMount() {
-    axios.get("http://localhost:5000/meta/project")
+  //const electraProject = useSelector(state => state.project);
+
+  useEffect(() => {
+    console.log("Hi ------------------------");
+    axios.get("http://DESKTOP-7KQ9JNL:5000/meta/project")
       .then((response) => {
         return response.data;
       })
@@ -45,35 +26,35 @@ export default class HeaderDiv extends Component {
           return { display: project.name }
         });
 
-        this.setState({
-          projectList: [{ value: '', display: 'Select the Project' }].concat(projectsFromApi)
-        });
+        setProjectList([{ value: '', display: 'Select the Project' }].concat(projectsFromApi));
+
       }).catch(error => {
         console.log(error);
       });
-  }
+  }, []);
 
-  importProject() {
-    this.setState({ BtnImportPressed: true });
-    axios.get("http://localhost:5000/meta/project/byName/" + this.state.projectName)
+
+  return (
+    <div className="blur d-flex">
+      <div className="mr-auto p-2"><div><h3 style={{ marginBottom: 0, marginLeft: "15px" }}> Electra </h3></div></div>
+      <div className="row p-2" style={{ padding: '26px' }}>
+        <h6 style={{ color: "white", marginTop: "7px", paddingRight: "10px" }}> Project : </h6>
+        <select value={projectName} onChange={e => handleChange(e)} className="project-select">
+          {projectList.map((team) => <option key={team.display} value={team.display}>{team.display}</option>)}
+        </select>
+      </div>
+    </div>
+  )
+
+  function handleChange(e) {
+    setProjectName(e.target.value);
+    axios.get("http://DESKTOP-7KQ9JNL:5000/meta/project/byName/" + e.target.value)
       .then(res => res.data)
       .then((data) => {
-        this.setState({ Project: data });
-      });
-  }
-
-  handleChange(e) {
-    this.setState({ ProjectName: e.target.value });
-    axios.get("http://localhost:5000/meta/project/byName/" + e.target.value)
-      .then(res => res.data)
-      .then((data) => {
-        this.setState({ projectName : data.name, project: data });
+        setProjectName(data.name);
+        dispatch(actionSelectedProject(data));
       });
     console.log("sss");
-  }
-
-  filterMessage() {
-    return !this.state.btnImportPressed ? "" : this.state.project.name === undefined || this.state.project.name === "" ? <div className="failed">Invalid</div> : <div className="success">Success</div>
   }
 
 }

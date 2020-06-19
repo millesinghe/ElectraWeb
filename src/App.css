@@ -19,7 +19,7 @@ body {
 .columnApp {
     display: flex;
     align-items: stretch;
-    height: 90vh;
+    height: 88vh;
     /* Should be removed. Only for demonstration */
 }
 
