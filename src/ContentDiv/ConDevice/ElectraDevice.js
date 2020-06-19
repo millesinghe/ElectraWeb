@@ -271,7 +271,9 @@ export default class ElectraDevice extends Component {
 
         tempDevice["urlMap"] = this.buildURLMap(nodeObj, tempDevice);
 
-        tempDevice["connectedNode"] = nodeObj;
+        // eslint-disable-next-line
+        let check = (nodeObj.id === undefined) ? "" : tempDevice["connectedNode"] = nodeObj ;
+        
 
         console.log("end0" + tempDevice);
         if (this.state.isNew) {
