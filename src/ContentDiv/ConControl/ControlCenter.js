@@ -5,7 +5,6 @@ import { Button, Card, Dropdown } from 'react-bootstrap'
 
 import * as SwitchCardIndex from "../../DeviceTypeCards/Switch/SwitchIndex"
 import ElectraCard from "../../DeviceTypeCards/ElectraCard";
-import { CardModel } from "./../../Model/CardModel"
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './ControlCenter.css'
@@ -17,10 +16,10 @@ export default function ControlCenter() {
 
     const [location, setLocation] = useState("All Locations")
     const [cardlist, setCardlist] = useState([]);
+    const [locationlist, setLocationlist] = useState([]);
     const [projectDevicesList, setProjectDevicesList] = useState([]);
 
     const electraProject = useSelector(state => state.project);
-    //const isProjectChanged = useSelector(state => state.isProjectSelect);
     const prevProject = usePrevious(electraProject);
 
 
@@ -47,6 +46,7 @@ export default function ControlCenter() {
     }
 
     function selectedChoice(event) {
+        console.log(event);
         setLocation(event);
     }
 
@@ -57,23 +57,46 @@ export default function ControlCenter() {
             varProject.nodesList : "";
 
         let deviceList = []
+        let locationCollector = []
         if (tempNodeList.length > 0) {
             // eslint-disable-next-line
             let tempDevices = tempNodeList.map(scNode => {
                 // eslint-disable-next-line
-                scNode.deviceList.map(dev => { dev.connectedNode = scNode.id; deviceList.push(dev) });
+                scNode.deviceList.map(dev => {
+                    dev.connectedNode = scNode.id;
+                    dev.nodeIp = scNode.ip;
+                    dev.nodePort = scNode.port;
+                    deviceList.push(dev);
+                    if (!arrayContains(locationCollector, dev.groupName)) {
+                        locationCollector.push(dev.groupName);
+                    }
+                });
             })
         }
 
         // Nail
         if (isProjectSelected !== false && prevProject !== electraProject.id) {
             setProjectDevicesList(deviceList);
+            setLocationlist(locationCollector);
             isProjectSelected = false;
+
+            getDeviceList();
             console.log("setProject - " + electraProject.id)
-        } else if (isProjectSelected === false){
-                isProjectSelected = true;
+
+        } else if (isProjectSelected === false) {
+            isProjectSelected = true;
         }
 
+    }
+
+    function arrayContains(array, obj) {
+        var i = array.length;
+        while (i--) {
+            if (array[i] === obj) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function renderParentCardHeader() {
@@ -84,11 +107,12 @@ export default function ControlCenter() {
                     <Dropdown onSelect={(evt) => { selectedChoice(evt) }} className="flex1 horizontalCenter">
                         <Dropdown.Toggle variant="Secondary" id="dropdown-basic">
                             Change Location
-                <Dropdown.Menu>
-                                <Dropdown.Item eventKey="All Locations">All</Dropdown.Item>
-                                <Dropdown.Item eventKey="Kitchen">Kitchen</Dropdown.Item>
-                                <Dropdown.Item eventKey="Dinning Room">Dinning Room</Dropdown.Item>
-                                <Dropdown.Item eventKey="Milinda's Room">Milinda's Room</Dropdown.Item>
+                            <Dropdown.Menu>
+                                <Dropdown.Item key="All Locations" eventKey="All Locations">All</Dropdown.Item>
+                                {locationlist.map((loc) =>
+                                    //testRender({location}, loc))};
+                                    <Dropdown.Item key={loc} eventKey={loc}>{loc}</Dropdown.Item>
+                                )};
                             </Dropdown.Menu>
                         </Dropdown.Toggle>
                     </Dropdown>
@@ -117,16 +141,8 @@ export default function ControlCenter() {
 
     // eslint-disable-next-line
     function getDeviceList() {
-        let card1 = new CardModel(1, "Milinda Standing Fan", false, "Milinda Room", "192.168.1.7", "5000", "2");
-        let card3 = new CardModel(3, "Milinda Dress Table Light", false, "Milinda Room", "192.168.1.7", "5000", "3");
-        let card2 = new CardModel(2, "Milinda Air Conditioner", false, "Milinda Room", "192.168.1.7", "5000", "2");
-
-        let myList = cardlist;
-        myList.push(card1);
-        myList.push(card2);
-        myList.push(card3);
-
-        setCardlist(myList);
+        // let card1 = new CardModel(10, "Milinda Standing Fan", false, "Milinda Room", "192.168.1.7", "5000", "2");
+        setCardlist(projectDevicesList);
     }
 
     function turnOffAll() {
@@ -138,6 +154,16 @@ export default function ControlCenter() {
         setCardlist(myList);
         console.log("Close All" + cardlist);
 
+    }
+
+    
+    function filterCard(card) {
+        let selected = {location};
+        if(selected.location === "All Locations" || selected.location=== card.groupName){
+            return <ElectraCard key={card.id} card={card}
+            myFunc={triggerStatus.bind(this)}
+        />
+        }
     }
 
     return (
@@ -152,9 +178,7 @@ export default function ControlCenter() {
 
                     <div className="Card-Layout">
                         {cardlist.map(card => (
-                            <ElectraCard key={card.id} card={card}
-                                myFunc={triggerStatus.bind(this)}
-                            />
+                            filterCard(card)
                         ))}
                     </div>
 

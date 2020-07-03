@@ -45,19 +45,19 @@ export default class ElectraCard extends React.Component {
                             </div>
                             <div className="nodeRow-card nodeRow">
                                 <p className="keyName flex3 closeText black">Device Location</p>
-                                <p className="flex3 closeText black">: {this.props.card.location}</p>
+                                <p className="flex3 closeText black">: {this.props.card.groupName}</p>
                             </div>
                             <div className="nodeRow-card nodeRow">
                                 <div className="keyName flex3 closeText black">Electra Node IP</div>
-                                <div className="flex3 closeText">: {this.props.card.ip}</div>
+                                <div className="flex3 closeText">: {this.props.card.nodeIp}</div>
                             </div>
                             <div className="nodeRow-card nodeRow">
                                 <div className="keyName flex3 closeText black">Port</div>
-                                <div className="flex3 closeText">: {this.props.card.port}</div>
+                                <div className="flex3 closeText">: {this.props.card.nodePort}</div>
                             </div>
                             <div className="nodeRow-card nodeRow">
                                 <div className="keyName flex3 closeText black">Node Socket</div>
-                                <div className="flex3 closeText">: {this.props.card.socket}</div>
+                                <div className="flex3 closeText">: {this.props.card.connectorSlot}</div>
                             </div>
 
                         </ListGroup.Item>
