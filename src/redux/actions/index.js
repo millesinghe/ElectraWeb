@@ -6,6 +6,13 @@ export const actionSelectedProject = (project) => {
     }
 }
 
+export const actionIsProjectSelect = (selected) => {
+    return {
+        type : 'SELECT_PROJECT_STATUS',
+        isStatus : selected
+    }
+}
+
 export const actionLoginUser = () => {
     return {
         type : 'SIGN_IN'

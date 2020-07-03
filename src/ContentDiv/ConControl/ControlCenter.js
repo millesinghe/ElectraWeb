@@ -1,38 +1,87 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
+
 import { Button, Card, Dropdown } from 'react-bootstrap'
 
 import * as SwitchCardIndex from "../../DeviceTypeCards/Switch/SwitchIndex"
 import ElectraCard from "../../DeviceTypeCards/ElectraCard";
-import {CardModel} from "./../../Model/CardModel"
+import { CardModel } from "./../../Model/CardModel"
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './ControlCenter.css'
-export default class ControlCenter extends Component {
 
 
-    componentWillMount(){
-        this.getDeviceList();
+let isProjectSelected;
+
+export default function ControlCenter() {
+
+    const [location, setLocation] = useState("All Locations")
+    const [cardlist, setCardlist] = useState([]);
+    const [projectDevicesList, setProjectDevicesList] = useState([]);
+
+    const electraProject = useSelector(state => state.project);
+    //const isProjectChanged = useSelector(state => state.isProjectSelect);
+    const prevProject = usePrevious(electraProject);
+
+
+    // getPrevProperty
+    function usePrevious(value) {
+        const ref = useRef();
+        useEffect(() => {
+            ref.current = value;
+        }, []);
+        return ref.current;
     }
 
-    state = {
-        location: "All Locations",
-        cardlist: []
+    useEffect(() => {
+        console.log("check");
+        setDeviceList();
+    });
 
-    };
+    // eslint-disable-next-line
+    function loadProjectDevices() {
 
+        let deviceList = this.state.projectDevicesList;
 
-    selectedChoice(event) {
-        this.setState({
-            location: event
-        });
+        setProjectDevicesList(deviceList);
     }
 
-    renderParentCardHeader() {
+    function selectedChoice(event) {
+        setLocation(event);
+    }
+
+    // eslint-disable-next-line
+    function setDeviceList() {
+        let varProject = electraProject.id === undefined ? "" : electraProject;
+        let tempNodeList = (!(varProject.nodesList === "" || varProject.nodesList === undefined)) && (prevProject !== electraProject) ?
+            varProject.nodesList : "";
+
+        let deviceList = []
+        if (tempNodeList.length > 0) {
+            // eslint-disable-next-line
+            let tempDevices = tempNodeList.map(scNode => {
+                // eslint-disable-next-line
+                scNode.deviceList.map(dev => { dev.connectedNode = scNode.id; deviceList.push(dev) });
+            })
+        }
+
+        // Nail
+        if (isProjectSelected !== false && prevProject !== electraProject.id) {
+            setProjectDevicesList(deviceList);
+            isProjectSelected = false;
+            console.log("setProject - " + electraProject.id)
+        } else if (isProjectSelected === false){
+                isProjectSelected = true;
+        }
+
+    }
+
+    function renderParentCardHeader() {
         return (
             <div className="headerRow">
-                <Card.Header className="flex3" as="h5">{this.state.location}</Card.Header>
+                <Card.Header className="flex3" as="h5">{location}</Card.Header>
                 <div>
-                    <Dropdown onSelect={(evt) => { this.selectedChoice(evt) }} className="flex1 horizontalCenter">
+                    <Dropdown onSelect={(evt) => { selectedChoice(evt) }} className="flex1 horizontalCenter">
                         <Dropdown.Toggle variant="Secondary" id="dropdown-basic">
                             Change Location
                 <Dropdown.Menu>
@@ -48,16 +97,16 @@ export default class ControlCenter extends Component {
         )
     }
 
-
-    renderCard(ViewName) {
+    // eslint-disable-next-line
+    function renderCard(ViewName) {
         if (!ViewName)
             return "";
         const Card = SwitchCardIndex[ViewName];
         return <Card />;
     }
 
-    triggerStatus(id) {
-        this.state.cardlist.forEach(card => {
+    function triggerStatus(id) {
+        cardlist.forEach(card => {
             if (card.id === id) {
                 card.isOn = !card.isOn;
             }
@@ -66,58 +115,52 @@ export default class ControlCenter extends Component {
 
     }
 
-    getDeviceList() {
+    // eslint-disable-next-line
+    function getDeviceList() {
         let card1 = new CardModel(1, "Milinda Standing Fan", false, "Milinda Room", "192.168.1.7", "5000", "2");
         let card3 = new CardModel(3, "Milinda Dress Table Light", false, "Milinda Room", "192.168.1.7", "5000", "3");
         let card2 = new CardModel(2, "Milinda Air Conditioner", false, "Milinda Room", "192.168.1.7", "5000", "2");
 
-        let myList = this.state.cardlist;
+        let myList = cardlist;
         myList.push(card1);
         myList.push(card2);
         myList.push(card3);
 
-        this.setState({
-            cardlist: myList
-        });
+        setCardlist(myList);
     }
 
-    turnOffAll() {
-        let myList = this.state.cardlist.map(card => {
+    function turnOffAll() {
+        let myList = cardlist.map(card => {
             card.isOn = false;
             return card;
         });
 
-        this.setState({ 
-            cardlist : myList
-        });
-        console.log("Close All" + this.state.cardlist);
-        
+        setCardlist(myList);
+        console.log("Close All" + cardlist);
+
     }
 
-    render() {
+    return (
+        <div>
+            <Card>
+                {renderParentCardHeader()}
+                <Card.Body>
+                    <div className="headerRow">
+                        <div className="flex6" />
+                        <Button onClick={() => { turnOffAll(); }} className="flex1" variant="danger">Off All</Button>
+                    </div>
 
-        return (
-            <div>
-                <Card>
-                    {this.renderParentCardHeader()}
+                    <div className="Card-Layout">
+                        {cardlist.map(card => (
+                            <ElectraCard key={card.id} card={card}
+                                myFunc={triggerStatus.bind(this)}
+                            />
+                        ))}
+                    </div>
 
-                    <Card.Body>
-                        <div className="headerRow">
-                            <div className="flex6" />
-                            <Button onClick={() => { this.turnOffAll(); }} className="flex1" variant="danger">Off All</Button>
-                        </div>
+                </Card.Body>
+            </Card>
+        </div>
+    )
 
-                        <div className="Card-Layout">
-                            {this.state.cardlist.map(card => (
-                                <ElectraCard key={card.id} card={card}
-                                    myFunc={this.triggerStatus.bind(this)}
-                                />
-                            ))}
-                        </div>
-
-                    </Card.Body>
-                </Card>
-            </div>
-        )
-    }
 }

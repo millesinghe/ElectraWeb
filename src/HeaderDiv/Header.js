@@ -2,21 +2,21 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, /** useSelector, */ } from 'react-redux';
 import axios from 'axios';
 
-import {actionSelectedProject} from './../redux/actions'
+import {actionSelectedProject, actionIsProjectSelect} from './../redux/actions'
 
 import './Header.css'
 
 export default function HeaderDiv() {
 
-  const dispatch = useDispatch();
-
+  const dispatchSelected = useDispatch();
+  const dispatchProject = useDispatch();
+  
   const [projectName, setProjectName] = useState("");
   const [projectList, setProjectList] = useState([]);
 
   //const electraProject = useSelector(state => state.project);
 
   useEffect(() => {
-    console.log("Hi ------------------------");
     axios.get("http://DESKTOP-7KQ9JNL:5000/meta/project")
       .then((response) => {
         return response.data;
@@ -52,9 +52,9 @@ export default function HeaderDiv() {
       .then(res => res.data)
       .then((data) => {
         setProjectName(data.name);
-        dispatch(actionSelectedProject(data));
+        dispatchSelected(actionIsProjectSelect(true));
+        dispatchProject(actionSelectedProject(data));
       });
-    console.log("sss");
   }
 
 }
