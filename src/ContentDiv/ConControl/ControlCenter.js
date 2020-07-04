@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
+import axios from 'axios';
 
 import { Button, Card, Dropdown } from 'react-bootstrap'
 
@@ -33,7 +34,6 @@ export default function ControlCenter() {
     }
 
     useEffect(() => {
-        console.log("check");
         setDeviceList();
     });
 
@@ -46,7 +46,6 @@ export default function ControlCenter() {
     }
 
     function selectedChoice(event) {
-        console.log(event);
         setLocation(event);
     }
 
@@ -81,7 +80,6 @@ export default function ControlCenter() {
             isProjectSelected = false;
 
             getDeviceList();
-            console.log("setProject - " + electraProject.id)
 
         } else if (isProjectSelected === false) {
             isProjectSelected = true;
@@ -131,11 +129,46 @@ export default function ControlCenter() {
 
     function triggerStatus(id) {
         cardlist.forEach(card => {
-            if (card.id === id) {
+            if (card.id === id) {            
                 card.isOn = !card.isOn;
+                execTriggerService(card);
             }
-
         });
+
+    }
+
+    function execTriggerService(card) {
+        let requestBody = {};
+        requestBody.isDigital = true;
+        if (card.isOn) {
+            requestBody.value = 1;
+        } else {
+            requestBody.value = 0;
+        }
+        let device = {};
+        device.project = card.project;
+        device.groupName = card.groupName;
+        device.device = card.name
+
+        requestBody.device = device;
+
+        axios.post("http://DESKTOP-7KQ9JNL:5000/control/switch", requestBody)
+            .then(res => res.data)
+            .then((data) => {
+                console.log("Send Request => " + data);
+            }).catch((error) => {
+                // Error
+                if (error.response) {
+                    let errorMessage = "";
+                    if (error.response.data.message.includes("TransientPropertyValueException")) {
+                        errorMessage = "Invalid Node for configuration"
+                    }
+                    this.setState({
+                        errorMsg: errorMessage
+                    });
+                    console.log(error.response.status + " - " + error.response.data);
+                }
+            });
 
     }
 
@@ -146,8 +179,12 @@ export default function ControlCenter() {
     }
 
     function turnOffAll() {
+        let selected = { location };
         let myList = cardlist.map(card => {
-            card.isOn = false;
+            if (selected.location === "All Locations" || selected.location === card.groupName) {
+                card.isOn = false;
+                execTriggerService(card);
+            }
             return card;
         });
 
@@ -156,13 +193,13 @@ export default function ControlCenter() {
 
     }
 
-    
+
     function filterCard(card) {
-        let selected = {location};
-        if(selected.location === "All Locations" || selected.location=== card.groupName){
+        let selected = { location };
+        if (selected.location === "All Locations" || selected.location === card.groupName) {
             return <ElectraCard key={card.id} card={card}
-            myFunc={triggerStatus.bind(this)}
-        />
+                myFunc={triggerStatus.bind(this)}
+            />
         }
     }
 
